@@ -38,16 +38,16 @@ router.post('/orders', async (req, res) => {
 // Endpoint untuk memperbarui atau membatalkan pesanan
 router.put('/orders/:id', async (req, res) => {
     try {
-        const { quantity } = req.body; // Ambil quantity dari body request
+        const { quantity } = req.body; // Ambil jumlah baru dari body request
         const orderId = req.params.id;
 
         if (quantity <= 0) {
-            // Jika quantity 0 atau kurang, hapus pesanan
+            // Jika jumlah menjadi 0 atau kurang, hapus pesanan
             await Order.findByIdAndDelete(orderId);
             return res.json({ message: 'Order removed from cart' });
         }
 
-        // Jika quantity lebih dari 0, perbarui data pesanan
+        // Jika jumlah lebih dari 0, perbarui data jumlah
         const updatedOrder = await Order.findByIdAndUpdate(orderId, { quantity }, { new: true });
         res.json({ message: 'Order quantity updated', updatedOrder });
     } catch (err) {
@@ -55,5 +55,6 @@ router.put('/orders/:id', async (req, res) => {
         res.status(500).json({ message: 'Failed to update order' });
     }
 });
+
 
 module.exports = router;
