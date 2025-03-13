@@ -1,33 +1,37 @@
+require('dotenv').config();
+
 const express = require('express');
 const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-require('dotenv').config();
+const productRoutes = require('./routes/productRoutes');
+const orderRoutes = require('./routes/orderRoutes');
 
 const app = express();
 
 // Middleware
 app.use(express.json());
+app.use(express.static('public')); // Untuk file frontend seperti index.html
 
-// Ambil variabel lingkungan dari .env
+// Variabel lingkungan dari .env
 const PORT = process.env.PORT || 5000;
 const MONGODB_URI = process.env.MONGODB_URI;
 
-// Fungsi debugging untuk koneksi MongoDB
+// Koneksi ke MongoDB
 mongoose.connect(MONGODB_URI)
-    .then(() => {
-        console.log('✅ Connected to MongoDB Atlas');
-    })
+    .then(() => console.log('✅ Connected to MongoDB Atlas'))
     .catch((err) => {
         console.error('❌ Failed to connect to MongoDB:', err.message);
     });
 
-// Debugging untuk port
-app.listen(PORT, () => {
-    console.log(`🚀 Server running on port ${PORT}`);
+// Routes
+app.use('/api', productRoutes); // Prefix "api" untuk route produk
+app.use('/api', orderRoutes); // Prefix "api" untuk route pesanan
+
+// Debugging tambahan
+app.get('/', (req, res) => {
+    res.sendFile(__dirname + '/public/index.html');
 });
 
-// Tes route untuk memastikan server berjalan
-app.get('/', (req, res) => {
-    res.send('Hello, Coffee Shop!');
+// Jalankan server
+app.listen(PORT, () => {
+    console.log(`🚀 Server running on port ${PORT}`);
 });
