@@ -2,20 +2,32 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+require('dotenv').config();
 
 const app = express();
 
 // Middleware
-app.use(bodyParser.json());
-app.use(cors());
+app.use(express.json());
 
-// Koneksi ke MongoDB Atlas
-mongoose.connect('YOUR_MONGODB_URI', { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(() => console.log('Connected to MongoDB Atlas'))
-    .catch((err) => console.log('Error:', err));
+// Ambil variabel lingkungan dari .env
+const PORT = process.env.PORT || 5000;
+const MONGODB_URI = process.env.MONGODB_URI;
 
-// Route contoh
-app.get('/', (req, res) => res.send('Hello, Coffee Shop!'));
+// Fungsi debugging untuk koneksi MongoDB
+mongoose.connect(MONGODB_URI)
+    .then(() => {
+        console.log('✅ Connected to MongoDB Atlas');
+    })
+    .catch((err) => {
+        console.error('❌ Failed to connect to MongoDB:', err.message);
+    });
 
-const PORT = 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+// Debugging untuk port
+app.listen(PORT, () => {
+    console.log(`🚀 Server running on port ${PORT}`);
+});
+
+// Tes route untuk memastikan server berjalan
+app.get('/', (req, res) => {
+    res.send('Hello, Coffee Shop!');
+});

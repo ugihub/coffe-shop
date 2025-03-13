@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coffee Shop</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-gray-100 font-sans">
+    <!-- Hero Section -->
+    <header class="bg-cover bg-center h-screen text-white" style="background-image: url('coffee.jpg');">
+        <div class="flex items-center justify-center h-full bg-black bg-opacity-50">
+            <div class="text-center">
+                <h1 class="text-5xl font-bold mb-4">Welcome to Coffee Bliss</h1>
+                <p class="text-xl mb-6">Savor the finest coffee, brewed with love.</p>
+                <a href="#menu"
+                    class="bg-yellow-500 text-black px-6 py-3 rounded-md font-semibold hover:bg-yellow-600">Explore Our
+                    Menu</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- About Section -->
+    <section id="about" class="py-12 px-6 bg-white">
+        <div class="max-w-5xl mx-auto text-center">
+            <h2 class="text-4xl font-bold mb-4">About Us</h2>
+            <p class="text-lg text-gray-600">At Coffee Bliss, we bring you the richest coffee experience. Locally
+                sourced, ethically brewed, and served with passion.</p>
+        </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section id="menu" class="py-12 px-6 bg-gray-200">
+        <div class="max-w-5xl mx-auto text-center">
+            <h2 class="text-4xl font-bold mb-4">Our Menu</h2>
+            <div id="menu-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-6">
+                <!-- Menu items will be dynamically added here using JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-6 text-center">
+        <p class="text-sm">&copy; 2025 Coffee Bliss. All Rights Reserved.</p>
+    </footer>
+</body>
+
+</html>
