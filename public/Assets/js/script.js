@@ -56,7 +56,8 @@ function addToCart(productId) {
             return response.json();
         })
         .then(data => {
-            alert(data.message); // Berikan notifikasi jika berhasil
+            alert(data.message); // Notifikasi berhasil
+            location.reload(); // Refresh halaman untuk memperbarui tampilan keranjang
         })
         .catch(err => console.error('Error adding to cart:', err.message));
 }
