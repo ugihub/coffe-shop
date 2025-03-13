@@ -49,18 +49,18 @@ function updateCart(orderId, newQuantity) {
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
-            return response.json();
-        })
-        .then(data => {
-            alert(data.message); // Notifikasi berhasil
-            fetchCart(); // Perbarui tampilan keranjang
+
+            // Jika respons sukses, panggil fetchCart() untuk memperbarui tampilan keranjang
+            fetchCart();
         })
         .catch(err => console.error('Error updating cart:', err.message));
 }
 
+
+
 function fetchCart() {
     const cartContainer = document.getElementById('cart-container');
-    cartContainer.innerHTML = ''; // Kosongkan kontainer keranjang
+    cartContainer.innerHTML = ''; // Kosongkan kontainer keranjang sebelum memuat ulang
 
     fetch('http://localhost:5000/api/orders')
         .then(response => {
@@ -72,7 +72,7 @@ function fetchCart() {
         .then(data => {
             data.forEach(order => {
                 if (!order.productId) {
-                    console.warn('Order has null productId:', order); // Debugging untuk null productId
+                    console.warn('Order has null productId:', order); // Debugging jika ada null productId
                     return;
                 }
 
@@ -80,15 +80,19 @@ function fetchCart() {
                 div.classList.add('bg-white', 'shadow-md', 'rounded-md', 'p-4');
                 div.innerHTML = `
                     <h3 class="text-lg font-bold">${order.productId.name}</h3>
-                    <p class="text-gray-600">Quantity: ${order.quantity}</p>
-                    <p class="text-yellow-500 font-semibold">${order.productId.price} IDR</p>
-                    <button class="bg-red-500 text-white px-4 py-2 rounded-md mt-4" onclick="updateCart('${order._id}', ${order.quantity - 1})">Remove</button>
+                    <p class="text-gray-600">Price: ${order.productId.price} IDR</p>
+                    <div class="flex items-center mt-4">
+                        <button class="bg-red-500 text-white px-3 py-1 rounded-md" onclick="updateCart('${order._id}', ${order.quantity - 1})">-</button>
+                        <p class="mx-4">${order.quantity}</p>
+                        <button class="bg-green-500 text-white px-3 py-1 rounded-md" onclick="updateCart('${order._id}', ${order.quantity + 1})">+</button>
+                    </div>
                 `;
                 cartContainer.appendChild(div);
             });
         })
         .catch(err => console.error('Error fetching cart:', err.message));
 }
+
 
 fetchCart(); // Ambil data keranjang saat halaman dimuat
 

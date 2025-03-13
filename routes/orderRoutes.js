@@ -44,12 +44,12 @@ router.put('/orders/:id', async (req, res) => {
         if (quantity <= 0) {
             // Jika jumlah menjadi 0 atau kurang, hapus pesanan
             await Order.findByIdAndDelete(orderId);
-            return res.json({ message: 'Order removed from cart' });
+            return res.status(204).send(); // Mengembalikan status 204 tanpa konten
         }
 
         // Jika jumlah lebih dari 0, perbarui data jumlah
         const updatedOrder = await Order.findByIdAndUpdate(orderId, { quantity }, { new: true });
-        res.json({ message: 'Order quantity updated', updatedOrder });
+        res.json({ updatedOrder });
     } catch (err) {
         console.error('Error updating order:', err.message);
         res.status(500).json({ message: 'Failed to update order' });
