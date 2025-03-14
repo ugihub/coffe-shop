@@ -1,11 +1,23 @@
-function blockUnauthorizedAccess(req, res, next) {
-    const secretKey = req.headers['x-admin-secret']; // Ambil kode rahasia dari header
+const jwt = require('jsonwebtoken');
 
-    if (secretKey !== 'YOUR_SECRET_KEY') { // Ganti YOUR_SECRET_KEY dengan kode rahasia Anda
-        return res.status(403).json({ message: 'Access denied. You are not authorized to view this page.' });
+function blockUnauthorizedAccess(req, res, next) {
+    const authHeader = req.headers.authorization;
+    if (!authHeader) {
+        return res.status(403).json({ message: 'Access denied. No token provided.' });
     }
 
-    next(); // Jika kode rahasia cocok, lanjutkan ke handler berikutnya
+    const token = authHeader.split(' ')[1];
+    if (!token) {
+        return res.status(403).json({ message: 'Access denied. Invalid token format.' });
+    }
+
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        req.user = decoded; // Simpan informasi user dari token
+        next();
+    } catch (err) {
+        res.status(403).json({ message: 'Access denied. Invalid token.' });
+    }
 }
 
-module.exports = blockUnauthorizedAccess;
+module.exports = blockAccessMiddleware;

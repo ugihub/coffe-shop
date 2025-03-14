@@ -6,7 +6,7 @@ const Product = require('../models/productModels');
 // Terapkan middleware di semua route admin
 router.use(blockUnauthorizedAccess);
 
-// Endpoint untuk menambahkan barang
+// Endpoint untuk menambahkan produk
 router.post('/products', async (req, res) => {
     const { name, price, description } = req.body;
     if (!name || !price) {
@@ -23,7 +23,7 @@ router.post('/products', async (req, res) => {
     }
 });
 
-// Endpoint untuk menghapus barang
+// Endpoint untuk menghapus produk
 router.delete('/products/:id', async (req, res) => {
     try {
         const productId = req.params.id;

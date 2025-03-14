@@ -1,50 +1,40 @@
 const form = document.getElementById('addProductForm');
 const productContainer = document.getElementById('productContainer');
-
-// Kode rahasia admin
-const validToken = '1234'; // Ganti dengan token rahasia Anda
 const tokenModal = document.getElementById('tokenModal');
+const adminContent = document.getElementById('adminContent');
+const submitTokenButton = document.getElementById('submitToken');
+const errorMessage = document.getElementById('errorMessage');
 
-// Fungsi validasi token
-function validateToken() {
-    const token = document.getElementById('adminToken').value; // Ambil nilai token dari input modal
+// Token valid
+const validToken = 'your-admin-token'; // Ganti dengan token yang sesuai
 
-    if (token === validToken) {
-        document.body.classList.remove('blurred'); // Hapus efek blur jika token valid
+// Cek token saat pengguna memasuki halaman
+submitTokenButton.addEventListener('click', () => {
+    const enteredToken = document.getElementById('adminToken').value;
+
+    if (enteredToken === validToken) {
         tokenModal.classList.add('hidden'); // Sembunyikan modal
-        localStorage.setItem('adminAccess', 'true'); // Simpan akses di localStorage
+        adminContent.classList.remove('hidden'); // Tampilkan konten admin
     } else {
-        alert('Invalid token!'); // Tampilkan pesan jika token salah
+        errorMessage.classList.remove('hidden'); // Tampilkan pesan error
     }
-}
+});
 
-// Periksa akses saat halaman dimuat
-window.onload = () => {
-    const hasAccess = localStorage.getItem('adminAccess'); // Periksa localStorage untuk akses admin
-
-    if (hasAccess === 'true') {
-        tokenModal.classList.add('hidden'); // Jika sudah memiliki akses, sembunyikan modal
-    } else {
-        document.body.classList.add('blurred'); // Tambahkan efek blur jika belum ada akses
-    }
-};
-
-// Fetch produk dari server
+// Fungsi untuk memuat daftar produk
 function fetchProducts() {
     fetch('http://localhost:5000/api/products', {
         headers: {
-            'x-admin-secret': validToken // Sertakan token di header permintaan
+            'Authorization': `Bearer ${validToken}`
         }
     })
         .then(response => {
             if (!response.ok) {
-                throw new Error('Failed to fetch products'); // Jika gagal, tampilkan error
+                throw new Error('Failed to fetch products');
             }
             return response.json();
         })
         .then(data => {
-            const productContainer = document.getElementById('productContainer');
-            productContainer.innerHTML = ''; // Kosongkan daftar produk sebelum memuat ulang
+            productContainer.innerHTML = ''; // Bersihkan kontainer sebelum memuat ulang
             data.forEach(product => {
                 const li = document.createElement('li');
                 li.classList.add('flex', 'justify-between', 'mb-4', 'items-center');
@@ -55,10 +45,10 @@ function fetchProducts() {
                 productContainer.appendChild(li);
             });
         })
-        .catch(err => console.error('Error fetching products:', err.message));
+        .catch(err => alert('Error fetching products: ' + err.message));
 }
 
-// Tambahkan produk
+// Fungsi untuk menambahkan produk
 form.addEventListener('submit', (e) => {
     e.preventDefault();
 
@@ -68,7 +58,10 @@ form.addEventListener('submit', (e) => {
 
     fetch('http://localhost:5000/api/admin/products', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${validToken}`
+        },
         body: JSON.stringify({ name, price, description })
     })
         .then(response => {
@@ -78,24 +71,31 @@ form.addEventListener('submit', (e) => {
             return response.json();
         })
         .then(() => {
-            form.reset(); // Reset form setelah berhasil
+            alert('Product added successfully!');
+            form.reset(); // Reset form setelah sukses
             fetchProducts(); // Refresh daftar produk
         })
-        .catch(err => console.error('Error adding product:', err.message));
+        .catch(err => alert('Error adding product: ' + err.message));
 });
 
-// Hapus produk
+// Fungsi untuk menghapus produk
 function deleteProduct(productId) {
+    if (!confirm('Are you sure you want to delete this product?')) return;
+
     fetch(`http://localhost:5000/api/admin/products/${productId}`, {
-        method: 'DELETE'
+        method: 'DELETE',
+        headers: {
+            'Authorization': `Bearer ${validToken}`
+        }
     })
         .then(response => {
             if (!response.ok) {
                 throw new Error('Failed to delete product');
             }
+            alert('Product deleted successfully!');
             fetchProducts(); // Refresh daftar produk
         })
-        .catch(err => console.error('Error deleting product:', err.message));
+        .catch(err => alert('Error deleting product: ' + err.message));
 }
 
 // Muat daftar produk saat halaman dimuat

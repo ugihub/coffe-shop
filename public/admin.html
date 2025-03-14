@@ -5,47 +5,55 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Panel</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="./Assets/css/admin.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
 </head>
 
-<body class="bg-gray-100">
-    <div class="max-w-5xl mx-auto py-12">
-        <h1 class="text-3xl font-bold mb-6">Admin Panel</h1>
-
-        <!-- Form Tambah Barang -->
-        <form id="addProductForm" class="bg-white shadow-md rounded px-8 py-6 mb-8">
-            <h2 class="text-2xl font-bold mb-4">Add Product</h2>
-            <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2">Name</label>
-                <input type="text" id="name"
-                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight">
-            </div>
-            <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2">Price</label>
-                <input type="number" id="price"
-                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight">
-            </div>
-            <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2">Description</label>
-                <textarea id="description"
-                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight"></textarea>
-            </div>
-            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Add Product</button>
-        </form>
-
-        <!-- Daftar Barang -->
-        <div id="productList" class="bg-white shadow-md rounded px-8 py-6">
-            <h2 class="text-2xl font-bold mb-4">Product List</h2>
-            <ul id="productContainer" class="list-disc pl-5"></ul>
+<body class="bg-gray-100 min-h-screen flex flex-col justify-center items-center">
+    <!-- Modal untuk input token -->
+    <div id="tokenModal" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
+        <div class="bg-white p-6 rounded shadow-md text-center">
+            <h2 class="text-xl font-bold mb-4">Enter Admin Token</h2>
+            <input type="password" id="adminToken" placeholder="Enter token here"
+                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-4 leading-tight focus:outline-none focus:shadow-outline" />
+            <button id="submitToken"
+                class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline">
+                Submit
+            </button>
+            <p id="errorMessage" class="text-red-500 mt-2 hidden">Invalid token. Please try again.</p>
         </div>
     </div>
 
-    <div id="tokenModal">
-        <div>
-            <input type="password" id="adminToken" placeholder="Enter Admin Token">
-            <button onclick="validateToken()">Submit</button>
-        </div>
+    <!-- Halaman Admin -->
+    <div id="adminContent" class="hidden w-full max-w-4xl bg-white shadow-md rounded px-8 py-6">
+        <h1 class="text-2xl font-bold mb-6">Admin Panel - Product Management</h1>
+
+        <!-- Form untuk menambahkan produk -->
+        <form id="addProductForm" class="mb-6">
+            <div class="mb-4">
+                <label for="name" class="block text-gray-700 font-bold mb-2">Product Name:</label>
+                <input type="text" id="name" name="name"
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    required>
+            </div>
+            <div class="mb-4">
+                <label for="price" class="block text-gray-700 font-bold mb-2">Product Price (IDR):</label>
+                <input type="number" id="price" name="price"
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    required>
+            </div>
+            <div class="mb-4">
+                <label for="description" class="block text-gray-700 font-bold mb-2">Product Description:</label>
+                <textarea id="description" name="description"
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
+            </div>
+            <button type="submit"
+                class="bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline">
+                Add Product
+            </button>
+        </form>
+
+        <!-- Daftar produk -->
+        <ul id="productContainer" class="list-disc pl-5"></ul>
     </div>
 
     <script src="./Assets/js/admin.js"></script>

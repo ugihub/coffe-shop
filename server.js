@@ -11,6 +11,7 @@ const app = express();
 // Middleware
 app.use(express.json());
 app.use(express.static('public')); // Untuk file frontend seperti index.html
+app.use(cors());
 
 // Variabel lingkungan dari .env
 const PORT = process.env.PORT || 5000;
