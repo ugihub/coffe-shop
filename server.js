@@ -4,6 +4,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const productRoutes = require('./routes/productRoutes');
 const orderRoutes = require('./routes/orderRoutes');
+const adminRoutes = require('./routes/adminRoutes');
 
 const app = express();
 
@@ -25,10 +26,14 @@ mongoose.connect(MONGODB_URI)
 // Routes
 app.use('/api', productRoutes); // Prefix "api" untuk route produk
 app.use('/api', orderRoutes); // Prefix "api" untuk route pesanan
+app.use('/api/admin', adminRoutes); // Prefix /api/admin untuk route admin
 
 // Debugging tambahan
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/public/index.html');
+});
+app.get('/Admin', (req, res) => {
+    res.sendFile(__dirname + '/public/admin.html');
 });
 
 // Jalankan server
