@@ -11,6 +11,9 @@ const app = express();
 // Middleware
 app.use(express.json());
 app.use(express.static('public')); // Untuk file frontend seperti index.html
+const cors = require('cors');
+app.use(cors({ origin: 'http://localhost:5000' })); // Sesuaikan dengan URL frontend
+
 
 // Variabel lingkungan dari .env
 const PORT = process.env.PORT || 5000;

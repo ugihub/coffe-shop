@@ -1,10 +1,21 @@
 const express = require('express');
 const router = express.Router();
-const blockUnauthorizedAccess = require('../middlewares/blockAccessMiddleware');
+const blockUnauthorizedAccess = require('../middlewares/blockUnauthorizedAccess');
 const Product = require('../models/productModels');
 
 // Terapkan middleware di semua route admin
 router.use(blockUnauthorizedAccess);
+
+// Endpoint untuk mendapatkan semua produk
+router.get('/products', async (req, res) => {
+    try {
+        const products = await Product.find(); // Harus mengembalikan array
+        res.json(products);
+    } catch (err) {
+        console.error('Error fetching products:', err.message);
+        res.status(500).json({ message: 'Failed to fetch products' });
+    }
+});
 
 // Endpoint untuk menambahkan produk
 router.post('/products', async (req, res) => {

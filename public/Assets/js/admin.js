@@ -1,30 +1,44 @@
 const form = document.getElementById('addProductForm');
 const productContainer = document.getElementById('productContainer');
-const tokenModal = document.getElementById('tokenModal');
+const passwordModal = document.getElementById('passwordModal');
 const adminContent = document.getElementById('adminContent');
-const submitTokenButton = document.getElementById('submitToken');
+const submitPasswordButton = document.getElementById('submitPassword');
 const errorMessage = document.getElementById('errorMessage');
 
-// Token valid
-const validToken = 'your-admin-token'; // Ganti dengan token yang sesuai
+// Sandi admin yang dimasukkan pengguna
+let adminPassword = null;
 
-// Cek token saat pengguna memasuki halaman
-submitTokenButton.addEventListener('click', () => {
-    const enteredToken = document.getElementById('adminToken').value;
+// Cek sandi saat pengguna memasuki halaman
+submitPasswordButton.addEventListener('click', () => {
+    const enteredPassword = document.getElementById('adminPassword').value;
 
-    if (enteredToken === validToken) {
-        tokenModal.classList.add('hidden'); // Sembunyikan modal
-        adminContent.classList.remove('hidden'); // Tampilkan konten admin
-    } else {
-        errorMessage.classList.remove('hidden'); // Tampilkan pesan error
-    }
+    fetch('http://localhost:5000/api/admin/products', {
+        method: 'GET',
+        headers: {
+            'Authorization': enteredPassword
+        }
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Invalid password');
+            }
+            passwordModal.classList.add('hidden');
+            adminContent.classList.remove('hidden');
+        })
+        .catch(() => {
+            adminPassword = null;
+            errorMessage.innerText = "Invalid password. Please check your input!";
+            errorMessage.classList.remove('hidden');
+        });
 });
 
 // Fungsi untuk memuat daftar produk
 function fetchProducts() {
+    const enteredPassword = document.getElementById('adminPassword').value;
+
     fetch('http://localhost:5000/api/products', {
         headers: {
-            'Authorization': `Bearer ${validToken}`
+            'Authorization': enteredPassword
         }
     })
         .then(response => {
@@ -55,12 +69,13 @@ form.addEventListener('submit', (e) => {
     const name = document.getElementById('name').value;
     const price = document.getElementById('price').value;
     const description = document.getElementById('description').value;
+    const enteredPassword = document.getElementById('adminPassword').value;
 
     fetch('http://localhost:5000/api/admin/products', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${validToken}`
+            'Authorization': enteredPassword
         },
         body: JSON.stringify({ name, price, description })
     })
@@ -82,10 +97,12 @@ form.addEventListener('submit', (e) => {
 function deleteProduct(productId) {
     if (!confirm('Are you sure you want to delete this product?')) return;
 
+    const enteredPassword = document.getElementById('adminPassword').value;
+
     fetch(`http://localhost:5000/api/admin/products/${productId}`, {
         method: 'DELETE',
         headers: {
-            'Authorization': `Bearer ${validToken}`
+            'Authorization': enteredPassword
         }
     })
         .then(response => {
