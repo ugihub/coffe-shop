@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Panel</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./Assets/css/admin.css">
 </head>
 
 <body class="bg-gray-100">
@@ -40,7 +41,14 @@
         </div>
     </div>
 
-    <script src="admin.js"></script>
+    <div id="tokenModal">
+        <div>
+            <input type="password" id="adminToken" placeholder="Enter Admin Token">
+            <button onclick="validateToken()">Submit</button>
+        </div>
+    </div>
+
+    <script src="./Assets/js/admin.js"></script>
 </body>
 
 </html>

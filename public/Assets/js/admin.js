@@ -1,12 +1,50 @@
 const form = document.getElementById('addProductForm');
 const productContainer = document.getElementById('productContainer');
 
-// Fetch dan tampilkan daftar produk
+// Kode rahasia admin
+const validToken = '1234'; // Ganti dengan token rahasia Anda
+const tokenModal = document.getElementById('tokenModal');
+
+// Fungsi validasi token
+function validateToken() {
+    const token = document.getElementById('adminToken').value; // Ambil nilai token dari input modal
+
+    if (token === validToken) {
+        document.body.classList.remove('blurred'); // Hapus efek blur jika token valid
+        tokenModal.classList.add('hidden'); // Sembunyikan modal
+        localStorage.setItem('adminAccess', 'true'); // Simpan akses di localStorage
+    } else {
+        alert('Invalid token!'); // Tampilkan pesan jika token salah
+    }
+}
+
+// Periksa akses saat halaman dimuat
+window.onload = () => {
+    const hasAccess = localStorage.getItem('adminAccess'); // Periksa localStorage untuk akses admin
+
+    if (hasAccess === 'true') {
+        tokenModal.classList.add('hidden'); // Jika sudah memiliki akses, sembunyikan modal
+    } else {
+        document.body.classList.add('blurred'); // Tambahkan efek blur jika belum ada akses
+    }
+};
+
+// Fetch produk dari server
 function fetchProducts() {
-    fetch('http://localhost:5000/api/admin/products')
-        .then(response => response.json())
+    fetch('http://localhost:5000/api/products', {
+        headers: {
+            'x-admin-secret': validToken // Sertakan token di header permintaan
+        }
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to fetch products'); // Jika gagal, tampilkan error
+            }
+            return response.json();
+        })
         .then(data => {
-            productContainer.innerHTML = ''; // Kosongkan daftar sebelum memuat ulang
+            const productContainer = document.getElementById('productContainer');
+            productContainer.innerHTML = ''; // Kosongkan daftar produk sebelum memuat ulang
             data.forEach(product => {
                 const li = document.createElement('li');
                 li.classList.add('flex', 'justify-between', 'mb-4', 'items-center');

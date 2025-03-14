@@ -1,19 +1,21 @@
 const express = require('express');
 const router = express.Router();
-const Product = require('../models/productModels'); // Import model Product
+const blockUnauthorizedAccess = require('../middlewares/blockAccessMiddleware');
+const Product = require('../models/productModels');
+
+// Terapkan middleware di semua route admin
+router.use(blockUnauthorizedAccess);
 
 // Endpoint untuk menambahkan barang
 router.post('/products', async (req, res) => {
+    const { name, price, description } = req.body;
+    if (!name || !price) {
+        return res.status(400).json({ message: 'Name and price are required' });
+    }
+
     try {
-        const { name, price, description } = req.body;
-
-        if (!name || !price) {
-            return res.status(400).json({ message: 'Name and price are required' });
-        }
-
         const newProduct = new Product({ name, price, description });
         await newProduct.save();
-
         res.status(201).json({ message: 'Product added successfully', product: newProduct });
     } catch (err) {
         console.error('Error adding product:', err.message);
