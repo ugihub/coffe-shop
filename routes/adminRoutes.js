@@ -1,4 +1,5 @@
 const express = require('express');
+const multer = require('multer');
 const router = express.Router();
 const blockUnauthorizedAccess = require('../middlewares/blockUnauthorizedAccess');
 const Product = require('../models/productModels');
@@ -6,26 +7,27 @@ const Product = require('../models/productModels');
 // Terapkan middleware di semua route admin
 router.use(blockUnauthorizedAccess);
 
-// Endpoint untuk mendapatkan semua produk
-router.get('/products', async (req, res) => {
-    try {
-        const products = await Product.find(); // Harus mengembalikan array
-        res.json(products);
-    } catch (err) {
-        console.error('Error fetching products:', err.message);
-        res.status(500).json({ message: 'Failed to fetch products' });
-    }
-});
+// Konfigurasi Multer untuk meng-upload file ke memory
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
 // Endpoint untuk menambahkan produk
-router.post('/products', async (req, res) => {
+router.post('/products', upload.single('image'), async (req, res) => {
     const { name, price, description } = req.body;
-    if (!name || !price) {
-        return res.status(400).json({ message: 'Name and price are required' });
+
+    if (!name || !price || !req.file) {
+        return res.status(400).json({ message: 'Name, price, and image are required' });
     }
 
     try {
-        const newProduct = new Product({ name, price, description });
+        const newProduct = new Product({
+            name,
+            price,
+            description,
+            image: req.file.buffer, // Simpan gambar sebagai binary
+            imageType: req.file.mimetype // Simpan MIME type
+        });
+
         await newProduct.save();
         res.status(201).json({ message: 'Product added successfully', product: newProduct });
     } catch (err) {
@@ -33,6 +35,29 @@ router.post('/products', async (req, res) => {
         res.status(500).json({ message: 'Failed to add product' });
     }
 });
+
+// Endpoint untuk mendapatkan daftar produk dan gambar
+router.get('/products', async (req, res) => {
+    try {
+        const products = await Product.find({});
+        console.log('Products fetched:', products); // Debug log
+
+        res.json(products.map(product => ({
+            _id: product._id,
+            name: product.name,
+            price: product.price,
+            description: product.description,
+            // Konversi binary ke Base64
+            image: product.image
+                ? `data:${product.imageType};base64,${product.image.toString('base64')}` // Base64 format
+                : null
+        })));
+    } catch (err) {
+        console.error('Error fetching products:', err.message);
+        res.status(500).json({ message: 'Failed to fetch products' });
+    }
+});
+
 
 // Endpoint untuk menghapus produk
 router.delete('/products/:id', async (req, res) => {

@@ -8,10 +8,11 @@ fetch('http://localhost:5000/api/products')
             const div = document.createElement('div');
             div.classList.add('bg-white', 'shadow-md', 'rounded-md', 'p-4');
             div.innerHTML = `
-                <h3 class="text-lg font-bold">${item.name}</h3>
-                <p class="text-gray-600">${item.description}</p>
-                <p class="text-yellow-500 font-semibold">${item.price} IDR</p>
-                <button class="bg-blue-500 text-white px-4 py-2 rounded-md mt-4" onclick="addToCart('${item._id}')">Add to Cart</button>
+                <div class="menu-item">
+                    <h3>${item.name}</h3>
+                    <p>${item.description}</p>
+                    <p>${item.price} IDR</p>
+                </div>
             `;
             menuContainer.appendChild(div);
         });

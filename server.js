@@ -3,7 +3,6 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const productRoutes = require('./routes/productRoutes');
-const orderRoutes = require('./routes/orderRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 
 const app = express();
@@ -13,6 +12,9 @@ app.use(express.json());
 app.use(express.static('public')); // Untuk file frontend seperti index.html
 const cors = require('cors');
 app.use(cors({ origin: 'http://localhost:5000' })); // Sesuaikan dengan URL frontend
+
+const path = require('path');
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 
 // Variabel lingkungan dari .env
@@ -28,7 +30,6 @@ mongoose.connect(MONGODB_URI)
 
 // Routes
 app.use('/api', productRoutes); // Prefix "api" untuk route produk
-app.use('/api', orderRoutes); // Prefix "api" untuk route pesanan
 app.use('/api/admin', adminRoutes); // Prefix /api/admin untuk route admin
 
 // Debugging tambahan
