@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-function blockUnauthorizedAccess(req, res, next) {
+function blockAccessMiddleware(req, res, next) {
     const authHeader = req.headers.authorization;
     if (!authHeader) {
         return res.status(403).json({ message: 'Access denied. No token provided.' });
