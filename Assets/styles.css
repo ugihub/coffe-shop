@@ -126,51 +126,7 @@ header .nav-links li a:hover {
   background-color: #fff;
 }
 
-/* Menu Section */
-.menu {
-  padding: 4rem 2rem;
-  text-align: center;
-  background: url("./img/background.jpg") no-repeat center center/cover;
-  background-attachment: fixed; /* Fixed background */
-  color: #fff;
-  position: relative;
-  z-index: 1;
-}
-
-.menu h2 {
-  font-size: 2.5rem;
-  margin-bottom: 2rem;
-}
-
-.menu-items {
-  display: flex;
-  justify-content: center;
-  gap: 2rem;
-  flex-wrap: wrap;
-}
-
-.menu .item {
-  background-color: #3e2723;
-  padding: 1rem;
-  border-radius: 10px;
-  width: 200px;
-  text-align: center;
-}
-
-.menu .item img {
-  width: 100%;
-  border-radius: 10px;
-}
-
-.menu .item h3 {
-  margin: 1rem 0 0.5rem;
-}
-
-.menu .item p {
-  font-size: 0.9rem;
-}
-
-/* About Section */
+/* menu Section */
 .info {
   background-color: #191919;
 }
@@ -246,46 +202,138 @@ header .nav-links li a:hover {
   top: 64em;
 }
 
-/* Contact Section */
-.contact {
-  padding: 4rem 2rem;
+/* coffe card */
+.container {
+  text-align: center;
+  margin-top: 5em;
+}
+.title {
+  font-size: 2.5em;
+  margin-bottom: 20px;
+  color: #d4af37;
+}
+.coffee-cards {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+.coffee-card {
+  padding: 20px;
+  border-radius: 10px;
+  width: 250px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.coffee-card:hover {
+  transform: translateY(-10px);
+  transition: 0.3s;
+  background-color: #191919;
+}
+
+.coffee-card img {
+  width: 100%;
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
+.coffee-card h3 {
+  margin: 0 0 10px 0;
+  font-size: 1.5em;
+  color: #d4af37;
+}
+.coffee-card p {
+  font-size: 0.9em;
+  color: #ccc;
+  margin: 0 0 15px 0;
+}
+.coffee-card .price {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #d4af37;
+}
+
+/* chef Section */
+.container-chef {
+  display: flex;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  background-color: #191919;
+}
+
+/* Bagian kiri */
+.left-section {
+  background-color: #000;
+  color: #fff;
+  padding: 30px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   text-align: center;
 }
 
-.contact h2 {
-  font-size: 2.5rem;
-  margin-bottom: 2rem;
+.left-section img {
+  width: 150px;
+  border-radius: 50%;
+  margin-bottom: 20px;
 }
 
-.contact form {
-  max-width: 600px;
-  margin: 0 auto;
+.left-section h2 {
+  font-size: 1.8em;
+  margin-bottom: 15px;
+  color: #d4af37;
+}
+
+.left-section p {
+  font-size: 0.9em;
+  color: #ccc;
+  line-height: 1.5;
+}
+
+/* Bagian kanan */
+.right-section {
   display: flex;
-  flex-direction: column;
-  gap: 1rem;
+  flex-wrap: wrap;
+  flex: 1.5;
+  padding: 20px;
 }
 
-.contact input,
-.contact textarea {
-  padding: 0.8rem;
-  border: none;
-  border-radius: 5px;
-  background-color: #3e2723;
-  color: #fff;
-}
-
-.contact button {
-  background-color: #d2b48c;
-  color: #1a1a1a;
-  padding: 0.8rem;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.contact button:hover {
+.card {
   background-color: #fff;
+  width: calc(50% - 10px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.card:active {
+  transform: scale(0.95);
+}
+
+.card img {
+  width: 100%;
+  height: auto;
+}
+
+.card .text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #000;
+  font-size: 1.2em;
+  font-weight: bold;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.7);
+  padding: 10px;
+  border-radius: 5px;
 }
 
 /* Footer */
