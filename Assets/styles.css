@@ -253,10 +253,11 @@ header .nav-links li a:hover {
 
 /* chef Section */
 .container-chef {
+  margin: 0;
   display: flex;
-  max-width: 1200px;
-  width: 100%;
-  margin: 0 auto;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
   background-color: #191919;
 }
 
@@ -270,6 +271,7 @@ header .nav-links li a:hover {
   flex-direction: column;
   justify-content: center;
   text-align: center;
+  margin: 0;
 }
 
 .left-section img {
@@ -295,7 +297,7 @@ header .nav-links li a:hover {
   display: flex;
   flex-wrap: wrap;
   flex: 1.5;
-  padding: 20px;
+  margin: 0;
 }
 
 .card {
