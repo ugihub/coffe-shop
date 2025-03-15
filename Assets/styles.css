@@ -1,0 +1,186 @@
+/* General Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Arial", sans-serif;
+  background-color: #1a1a1a;
+  color: #fff;
+  line-height: 1.6;
+}
+
+a {
+  text-decoration: none;
+  color: #fff;
+}
+
+/* Header */
+header {
+  background-color: #3e2723; /* Dark Chocolate */
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header .logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+header .nav-links {
+  list-style: none;
+  display: flex;
+  gap: 1.5rem;
+}
+
+header .nav-links li a {
+  transition: color 0.3s ease;
+}
+
+header .nav-links li a:hover {
+  color: #d2b48c; /* Light Chocolate */
+}
+
+/* Hero Section */
+.hero {
+  background: url("images/coffee-hero.jpg") no-repeat center center/cover;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: #fff;
+}
+
+.hero h1 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.hero p {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+}
+
+.hero .btn {
+  background-color: #d2b48c;
+  color: #1a1a1a;
+  padding: 0.8rem 2rem;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.hero .btn:hover {
+  background-color: #fff;
+}
+
+/* Menu Section */
+.menu {
+  padding: 4rem 2rem;
+  text-align: center;
+}
+
+.menu h2 {
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+}
+
+.menu-items {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.menu .item {
+  background-color: #3e2723;
+  padding: 1rem;
+  border-radius: 10px;
+  width: 200px;
+  text-align: center;
+}
+
+.menu .item img {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.menu .item h3 {
+  margin: 1rem 0 0.5rem;
+}
+
+.menu .item p {
+  font-size: 0.9rem;
+}
+
+/* About Section */
+.about {
+  padding: 4rem 2rem;
+  text-align: center;
+  background-color: #1a1a1a;
+}
+
+.about h2 {
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+}
+
+.about p {
+  max-width: 600px;
+  margin: 0 auto;
+  font-size: 1.2rem;
+}
+
+/* Contact Section */
+.contact {
+  padding: 4rem 2rem;
+  text-align: center;
+}
+
+.contact h2 {
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+}
+
+.contact form {
+  max-width: 600px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.contact input,
+.contact textarea {
+  padding: 0.8rem;
+  border: none;
+  border-radius: 5px;
+  background-color: #3e2723;
+  color: #fff;
+}
+
+.contact button {
+  background-color: #d2b48c;
+  color: #1a1a1a;
+  padding: 0.8rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.contact button:hover {
+  background-color: #fff;
+}
+
+/* Footer */
+footer {
+  background-color: #3e2723;
+  padding: 1rem;
+  text-align: center;
+  color: #fff;
+}
