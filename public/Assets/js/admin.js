@@ -1,132 +1,197 @@
+// admin.js
 const form = document.getElementById('addProductForm');
 const productContainer = document.getElementById('productContainer');
 const passwordModal = document.getElementById('passwordModal');
 const adminContent = document.getElementById('adminContent');
 const submitPasswordButton = document.getElementById('submitPassword');
 const errorMessage = document.getElementById('errorMessage');
+const loadingIndicator = document.getElementById('loadingIndicator');
 
-// Sandi admin yang dimasukkan pengguna
-let adminPassword = null;
+// Sembunyikan loading indicator saat awal
+loadingIndicator.style.display = 'none';
 
-// Cek sandi saat pengguna memasuki halaman
-submitPasswordButton.addEventListener('click', () => {
+// Fungsi untuk menampilkan loading
+function showLoading() {
+    loadingIndicator.style.display = 'block';
+}
+
+// Fungsi untuk menyembunyikan loading
+function hideLoading() {
+    loadingIndicator.style.display = 'none';
+}
+
+// Simpan password yang valid di memory (tidak disimpan di localStorage)
+let validPassword = null;
+
+// submit
+submitPasswordButton.addEventListener('click', async () => {
     const enteredPassword = document.getElementById('adminPassword').value;
 
-    fetch('http://localhost:5000/api/admin/products', {
-        method: 'GET',
-        headers: {
-            'Authorization': enteredPassword
-        }
-    })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Invalid password');
-            }
+    try {
+        const response = await fetch('/api/admin/verify-password', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ password: enteredPassword })
+        });
+
+        if (response.status === 200) {
+            validPassword = enteredPassword;
             passwordModal.classList.add('hidden');
             adminContent.classList.remove('hidden');
-        })
-        .catch(() => {
-            adminPassword = null;
-            errorMessage.innerText = "Invalid password. Please check your input!";
-            errorMessage.classList.remove('hidden');
-        });
+            fetchProducts();
+        } else {
+            throw new Error('Invalid password');
+        }
+    } catch (err) {
+        console.error(err);
+        errorMessage.textContent = "Invalid password. Please try again!";
+        errorMessage.classList.remove('hidden');
+    }
 });
+
+// Fungsi helper untuk request dengan header authorization
+const fetchWithAuth = (url, options = {}) => {
+    return fetch(url, {
+        ...options,
+        headers: {
+            ...options.headers,
+            'Authorization': validPassword // Pastikan password valid disimpan
+        }
+    });
+};
 
 // Fungsi untuk memuat daftar produk
-function fetchProducts() {
-    const enteredPassword = document.getElementById('adminPassword').value;
+async function fetchProducts() {
+    if (!authToken) return;
 
-    fetch('http://localhost:5000/api/admin/products', {
-        headers: {
-            'Authorization': enteredPassword
-        }
-    })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`Failed to fetch products. Status: ${response.status}`);
+    showLoading();
+    try {
+        const response = await fetch('http://localhost:5000/api/admin/products', {
+            headers: { 'Authorization': `Bearer ${authToken}` }
+        });
+
+        if (!response.ok) {
+            if (response.status === 401) {
+                logout();
+                return;
             }
-            return response.json();
-        })
-        .then(data => {
-            console.log('Fetched products:', data); // Debug log
-            productContainer.innerHTML = ''; // Bersihkan kontainer
-            data.forEach(product => {
-                const li = document.createElement('li');
-                li.classList.add('flex', 'justify-between', 'mb-4', 'items-center');
-                li.innerHTML = `
-                    <div class="flex items-center">
-                        ${product.image
-                        ? `<img src="${product.image}" alt="${product.name}" class="w-16 h-16 mr-4 rounded">`
-                        : `<span class="w-16 h-16 mr-4 bg-gray-300 flex items-center justify-center text-gray-500 rounded">No Image</span>`}
-                        <span>${product.name} - ${product.price} IDR</span>
-                    </div>
-                    <button class="bg-red-500 text-white px-4 py-2 rounded" onclick="deleteProduct('${product._id}')">Delete</button>
-                `;
-                productContainer.appendChild(li);
-            });
-        })
-        .catch(err => alert(`Error fetching products: ${err.message}`));
+            throw new Error('Gagal memuat produk');
+        }
+
+        const products = await response.json();
+        renderProducts(products);
+    } catch (err) {
+        console.error(err);
+        alert(`Error: ${err.message}`);
+    } finally {
+        hideLoading();
+    }
 }
 
-// Fungsi untuk menambahkan produk
-form.addEventListener('submit', (e) => {
+// Fungsi untuk render daftar produk
+function renderProducts(products) {
+    productContainer.innerHTML = products.map(product => `
+        <li class="flex justify-between mb-4 items-center p-4 border rounded">
+            <div class="flex items-center">
+                <img src="${product.imageUrl}" 
+                     alt="${product.name}" 
+                     class="w-20 h-20 mr-4 object-cover rounded"
+                     onerror="this.src='/placeholder.jpg'">
+                <div>
+                    <h3 class="font-bold">${product.name}</h3>
+                    <p>Harga: ${formatCurrency(product.price)}</p>
+                    <p class="text-sm text-gray-600">${product.description}</p>
+                </div>
+            </div>
+            <button onclick="deleteProduct('${product._id}')" 
+                    class="bg-red-500 hover:bg-red-700 text-white px-4 py-2 rounded">
+                Hapus
+            </button>
+        </li>
+    `).join('');
+}
+
+// Fungsi untuk format mata uang
+function formatCurrency(amount) {
+    return new Intl.NumberFormat('id-ID', {
+        style: 'currency',
+        currency: 'IDR'
+    }).format(amount);
+}
+
+// Handler form tambah produk
+form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const enteredPassword = document.getElementById('adminPassword').value;
-    const name = document.getElementById('name').value;
-    const price = document.getElementById('price').value;
-    const description = document.getElementById('description').value;
-    const image = document.getElementById('image').files[0]; // Ambil file gambar
+    if (!authToken) {
+        alert('Anda harus login terlebih dahulu');
+        return;
+    }
 
     const formData = new FormData();
-    formData.append('name', name);
-    formData.append('price', price);
-    formData.append('description', description);
-    formData.append('image', image); // Tambahkan file gambar ke FormData
+    formData.append('name', form.name.value);
+    formData.append('price', form.price.value);
+    formData.append('description', form.description.value);
+    formData.append('image', form.image.files[0]);
 
-    fetch('http://localhost:5000/api/admin/products', {
-        method: 'POST',
-        headers: {
-            'Authorization': enteredPassword
-        },
-        body: formData // Kirim data dalam bentuk FormData
-    })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to add product');
-            }
-            return response.json();
-        })
-        .then(() => {
-            alert('Product added successfully!');
-            form.reset(); // Reset form setelah berhasil
-            fetchProducts(); // Refresh daftar produk
-        })
-        .catch(err => alert('Error adding product: ' + err.message));
+    showLoading();
+
+    try {
+        const response = await fetch('http://localhost:5000/api/admin/products', {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${authToken}` },
+            body: formData
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'Gagal menambahkan produk');
+        }
+
+        form.reset();
+        await fetchProducts();
+        alert('Produk berhasil ditambahkan!');
+    } catch (err) {
+        console.error(err);
+        alert(`Error: ${err.message}`);
+    } finally {
+        hideLoading();
+    }
 });
 
+// Fungsi untuk hapus produk
+async function deleteProduct(productId) {
+    if (!confirm('Apakah Anda yakin ingin menghapus produk ini?')) return;
 
-// Fungsi untuk menghapus produk
-function deleteProduct(productId) {
-    if (!confirm('Are you sure you want to delete this product?')) return;
+    showLoading();
 
-    const enteredPassword = document.getElementById('adminPassword').value;
-
-    fetch(`http://localhost:5000/api/admin/products/${productId}`, {
-        method: 'DELETE',
-        headers: {
-            'Authorization': enteredPassword
-        }
-    })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to delete product');
+    try {
+        const response = await fetch(
+            `http://localhost:5000/api/admin/products/${productId}`,
+            {
+                method: 'DELETE',
+                headers: { 'Authorization': `Bearer ${authToken}` }
             }
-            alert('Product deleted successfully!');
-            fetchProducts(); // Refresh daftar produk
-        })
-        .catch(err => alert('Error deleting product: ' + err.message));
+        );
+
+        if (!response.ok) throw new Error('Gagal menghapus produk');
+
+        await fetchProducts();
+        alert('Produk berhasil dihapus!');
+    } catch (err) {
+        console.error(err);
+        alert(`Error: ${err.message}`);
+    } finally {
+        hideLoading();
+    }
 }
 
-// Muat daftar produk saat halaman dimuat
-fetchProducts();
+// Fungsi logout
+function logout() {
+    localStorage.removeItem('adminAuthToken');
+    authToken = null;
+    adminContent.classList.add('hidden');
+    passwordModal.classList.remove('hidden');
+}

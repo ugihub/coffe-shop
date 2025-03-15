@@ -1,46 +1,70 @@
 require('dotenv').config();
-
 const express = require('express');
 const mongoose = require('mongoose');
-const productRoutes = require('./routes/productRoutes');
-const adminRoutes = require('./routes/adminRoutes');
+const cors = require('cors');
+const path = require('path');
+const morgan = require('morgan');
 
 const app = express();
 
 // Middleware
-app.use(express.json());
-app.use(express.static('public')); // Untuk file frontend seperti index.html
-const cors = require('cors');
-app.use(cors({ origin: 'http://localhost:5000' })); // Sesuaikan dengan URL frontend
+app.use(cors({
+    origin: ['http://localhost:5000', 'http://localhost:3000'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
-const path = require('path');
+app.use(morgan('combined')); // Logging HTTP requests
+app.use(express.json({ limit: '5mb' }));
+app.use(express.urlencoded({ extended: true }));
+
+// Static files
+app.use(express.static(path.join(__dirname, 'public')));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-
-// Variabel lingkungan dari .env
-const PORT = process.env.PORT || 5000;
-const MONGODB_URI = process.env.MONGODB_URI;
-
-// Koneksi ke MongoDB
-mongoose.connect(MONGODB_URI)
-    .then(() => console.log('✅ Connected to MongoDB Atlas'))
-    .catch((err) => {
-        console.error('❌ Failed to connect to MongoDB:', err.message);
+// Database connection
+mongoose.connect(process.env.MONGODB_URI)
+    .then(() => console.log('✅ MongoDB connected successfully'))
+    .catch(err => {
+        console.error('❌ MongoDB connection error:', err.message);
+        process.exit(1);
     });
 
 // Routes
-app.use('/api', productRoutes); // Prefix "api" untuk route produk
-app.use('/api/admin', adminRoutes); // Prefix /api/admin untuk route admin
+const productRoutes = require('./routes/productRoutes');
+const adminRoutes = require('./routes/adminRoutes');
 
-// Debugging tambahan
+app.use('/api', productRoutes);
+app.use('/api/admin', adminRoutes);
+
+// Frontend routes
 app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/public/index.html');
-});
-app.get('/Admin', (req, res) => {
-    res.sendFile(__dirname + '/public/admin.html');
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// Jalankan server
+app.get('/admin', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'admin.html'));
+});
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+    console.error('❌ Server error:', err.stack);
+    res.status(500).json({
+        error: 'Internal Server Error',
+        message: err.message
+    });
+});
+
+// 404 handler
+app.use((req, res) => {
+    res.status(404).json({
+        error: 'Not Found',
+        message: `Endpoint ${req.method} ${req.url} not found`
+    });
+});
+
+// Start server
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`🚀 Server running on port ${PORT}`);
 });

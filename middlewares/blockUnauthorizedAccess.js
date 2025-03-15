@@ -1,18 +1,9 @@
-function checkPasswordMiddleware(req, res, next) {
-    const adminPassword = req.headers.authorization; // Ambil password dari header
+// middlewares/blockUnauthorizedAccess.js
+module.exports = (req, res, next) => {
+    const authHeader = req.headers.authorization;
 
-    if (!adminPassword) {
-        console.error('No authorization header provided');
-        return res.status(403).json({ message: 'Access denied. No password provided.' });
+    if (authHeader !== process.env.ADMIN_PASSWORD) {
+        return res.status(401).json({ error: 'Unauthorized' });
     }
-
-    if (adminPassword !== process.env.ADMIN_PASSWORD) {
-        console.error(`Invalid password: ${adminPassword}`);
-        return res.status(403).json({ message: 'Access denied. Invalid password.' });
-    }
-
-    console.log('Password accepted:', adminPassword); // Logging password yang diterima
-    next(); // Jika password benar, lanjutkan ke route berikutnya
-}
-
-module.exports = checkPasswordMiddleware;
+    next();
+};

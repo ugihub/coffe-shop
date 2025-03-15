@@ -7,72 +7,144 @@ const Product = require('../models/productModels');
 // Terapkan middleware di semua route admin
 router.use(blockUnauthorizedAccess);
 
-// Konfigurasi Multer untuk meng-upload file ke memory
-const storage = multer.memoryStorage();
-const upload = multer({ storage: storage });
+// Pastikan route verifikasi password tidak terproteksi middleware
+router.post('/verify-password', (req, res) => {
+    const { password } = req.body;
 
-// Endpoint untuk menambahkan produk
-router.post('/products', upload.single('image'), async (req, res) => {
-    const { name, price, description } = req.body;
+    // Tambahkan log untuk debugging
+    console.log('Received password:', password);
+    console.log('Expected password:', process.env.ADMIN_PASSWORD);
 
-    if (!name || !price || !req.file) {
-        return res.status(400).json({ message: 'Name, price, and image are required' });
-    }
-
-    try {
-        const newProduct = new Product({
-            name,
-            price,
-            description,
-            image: req.file.buffer, // Simpan gambar sebagai binary
-            imageType: req.file.mimetype // Simpan MIME type
-        });
-
-        await newProduct.save();
-        res.status(201).json({ message: 'Product added successfully', product: newProduct });
-    } catch (err) {
-        console.error('Error adding product:', err.message);
-        res.status(500).json({ message: 'Failed to add product' });
+    if (password === process.env.ADMIN_PASSWORD) {
+        res.sendStatus(200);
+    } else {
+        res.status(401).json({ error: 'Invalid password' });
     }
 });
 
-// Endpoint untuk mendapatkan daftar produk dan gambar
+// Middleware otentikasi untuk route lain
+router.use((req, res, next) => {
+    const authHeader = req.headers.authorization;
+
+    if (authHeader === process.env.ADMIN_PASSWORD) {
+        next();
+    } else {
+        res.status(401).json({ error: 'Unauthorized' });
+    }
+});
+
+// Konfigurasi Multer dengan validasi
+const storage = multer.memoryStorage();
+const fileFilter = (req, file, cb) => {
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
+    if (!allowedTypes.includes(file.mimetype)) {
+        const error = new Error('Format gambar tidak didukung');
+        error.code = 'INVALID_FILE_TYPE';
+        return cb(error);
+    }
+    cb(null, true);
+};
+
+const upload = multer({
+    storage,
+    fileFilter,
+    limits: { fileSize: 5 * 1024 * 1024 } // 5MB
+});
+
+// Endpoint untuk menambahkan produk
+router.post('/products', upload.single('image'), async (req, res) => {
+    try {
+        const { name, price, description } = req.body;
+
+        // Validasi input tambahan
+        if (!name || name.trim().length < 3) {
+            return res.status(400).json({ error: 'Nama minimal 3 karakter' });
+        }
+
+        if (!price || isNaN(parseFloat(price)) || parseFloat(price) <= 0) {
+            return res.status(400).json({ error: 'Harga harus angka positif' });
+        }
+
+        if (!req.file) {
+            return res.status(400).json({ error: 'Gambar wajib diupload' });
+        }
+
+        const newProduct = new Product({
+            name: name.trim(),
+            price: parseFloat(price),
+            description: description?.trim(),
+            image: req.file.buffer,
+            imageType: req.file.mimetype
+        });
+
+        await newProduct.save();
+        res.status(201).json({
+            message: 'Produk berhasil ditambahkan',
+            product: {
+                _id: newProduct._id,
+                name: newProduct.name,
+                price: newProduct.price,
+                description: newProduct.description,
+                imageUrl: `/api/admin/products/${newProduct._id}/image`
+            }
+        });
+    } catch (err) {
+        if (err.code === 'INVALID_FILE_TYPE') {
+            return res.status(400).json({ error: err.message });
+        }
+        if (err.message.includes('File too large')) {
+            return res.status(400).json({ error: 'Ukuran gambar maksimal 5MB' });
+        }
+        console.error('Error tambah produk:', err);
+        res.status(500).json({ error: 'Gagal menambahkan produk' });
+    }
+});
+
+// Endpoint untuk mendapatkan daftar produk
 router.get('/products', async (req, res) => {
     try {
         const products = await Product.find({});
-        console.log('Products fetched:', products); // Debug log
 
         res.json(products.map(product => ({
             _id: product._id,
             name: product.name,
             price: product.price,
             description: product.description,
-            // Konversi binary ke Base64
-            image: product.image
-                ? `data:${product.imageType};base64,${product.image.toString('base64')}` // Base64 format
-                : null
+            imageUrl: `/api/admin/products/${product._id}/image`
         })));
     } catch (err) {
-        console.error('Error fetching products:', err.message);
-        res.status(500).json({ message: 'Failed to fetch products' });
+        console.error('Error ambil produk:', err);
+        res.status(500).json({ error: 'Gagal mengambil data produk' });
     }
 });
 
+// Endpoint untuk mendapatkan gambar produk
+router.get('/products/:id/image', async (req, res) => {
+    try {
+        const product = await Product.findById(req.params.id);
+        if (!product || !product.image) {
+            return res.status(404).json({ error: 'Gambar tidak ditemukan' });
+        }
+
+        res.contentType(product.imageType);
+        res.send(product.image);
+    } catch (err) {
+        console.error('Error ambil gambar:', err);
+        res.status(500).json({ error: 'Gagal mengambil gambar' });
+    }
+});
 
 // Endpoint untuk menghapus produk
 router.delete('/products/:id', async (req, res) => {
     try {
-        const productId = req.params.id;
-
-        const deletedProduct = await Product.findByIdAndDelete(productId);
-        if (!deletedProduct) {
-            return res.status(404).json({ message: 'Product not found' });
+        const deleted = await Product.findByIdAndDelete(req.params.id);
+        if (!deleted) {
+            return res.status(404).json({ error: 'Produk tidak ditemukan' });
         }
-
-        res.status(200).json({ message: 'Product deleted successfully' });
+        res.json({ message: 'Produk berhasil dihapus' });
     } catch (err) {
-        console.error('Error deleting product:', err.message);
-        res.status(500).json({ message: 'Failed to delete product' });
+        console.error('Error hapus produk:', err);
+        res.status(500).json({ error: 'Gagal menghapus produk' });
     }
 });
 
