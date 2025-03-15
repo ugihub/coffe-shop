@@ -1,11 +1,18 @@
 const mongoose = require('mongoose');
 
 const productSchema = new mongoose.Schema({
-    name: { type: String, required: true },
-    price: { type: Number, required: true },
-    description: { type: String },
-    image: { type: Buffer }, // Field untuk menyimpan gambar sebagai binary data
-    imageType: { type: String } // Simpan tipe file gambar (MIME Type)
+    name: String,
+    price: Number,
+    description: String,
+    image: Buffer,
+    imageType: String
+}, {
+    toJSON: { virtuals: true }, // Pastikan virtuals di-include
+    toObject: { virtuals: true }
+});
+
+productSchema.virtual('imageUrl').get(function () {
+    return `/api/admin/products/${this._id}/image`;
 });
 
 module.exports = mongoose.model('Product', productSchema);

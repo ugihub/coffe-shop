@@ -1,4 +1,3 @@
-// admin.js
 const form = document.getElementById('addProductForm');
 const productContainer = document.getElementById('productContainer');
 const passwordModal = document.getElementById('passwordModal');
@@ -10,6 +9,9 @@ const loadingIndicator = document.getElementById('loadingIndicator');
 // Sembunyikan loading indicator saat awal
 loadingIndicator.style.display = 'none';
 
+// Variabel untuk menyimpan password yang valid
+let validPassword = null;
+
 // Fungsi untuk menampilkan loading
 function showLoading() {
     loadingIndicator.style.display = 'block';
@@ -20,23 +22,20 @@ function hideLoading() {
     loadingIndicator.style.display = 'none';
 }
 
-// Simpan password yang valid di memory (tidak disimpan di localStorage)
-let validPassword = null;
-
-// submit
+// Handler submit password
 submitPasswordButton.addEventListener('click', async () => {
-    const enteredPassword = document.getElementById('adminPassword').value;
+    const enteredPassword = document.getElementById('adminPassword').value.trim();
 
     try {
+        showLoading();
+
         const response = await fetch('/api/admin/verify-password', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ password: enteredPassword })
         });
 
-        if (response.status === 200) {
+        if (response.ok) {
             validPassword = enteredPassword;
             passwordModal.classList.add('hidden');
             adminContent.classList.remove('hidden');
@@ -45,67 +44,72 @@ submitPasswordButton.addEventListener('click', async () => {
             throw new Error('Invalid password');
         }
     } catch (err) {
-        console.error(err);
-        errorMessage.textContent = "Invalid password. Please try again!";
         errorMessage.classList.remove('hidden');
+        errorMessage.textContent = "Password salah. Coba lagi!";
+    } finally {
+        hideLoading();
     }
 });
 
-// Fungsi helper untuk request dengan header authorization
+// Fungsi helper untuk request dengan auth
 const fetchWithAuth = (url, options = {}) => {
     return fetch(url, {
         ...options,
         headers: {
             ...options.headers,
-            'Authorization': validPassword // Pastikan password valid disimpan
+            'Authorization': validPassword
         }
     });
 };
 
-// Fungsi untuk memuat daftar produk
+// Fungsi untuk memuat produk
 async function fetchProducts() {
-    if (!authToken) return;
+    if (!validPassword) return;
 
-    showLoading();
     try {
-        const response = await fetch('http://localhost:5000/api/admin/products', {
-            headers: { 'Authorization': `Bearer ${authToken}` }
-        });
-
-        if (!response.ok) {
-            if (response.status === 401) {
-                logout();
-                return;
-            }
-            throw new Error('Gagal memuat produk');
-        }
-
+        const response = await fetchWithAuth('/api/admin/products');
         const products = await response.json();
+        console.log('Received products:', products); // Tambahkan log
         renderProducts(products);
     } catch (err) {
         console.error(err);
-        alert(`Error: ${err.message}`);
+        alert('Terjadi kesalahan saat memuat produk');
     } finally {
         hideLoading();
     }
 }
 
-// Fungsi untuk render daftar produk
+// Fungsi format mata uang
+function formatCurrency(amount) {
+    return new Intl.NumberFormat('id-ID', {
+        style: 'currency',
+        currency: 'IDR'
+    }).format(amount || 0); // Tambahkan nilai default 0
+}
+
+// Fungsi untuk render produk
 function renderProducts(products) {
-    productContainer.innerHTML = products.map(product => `
+    if (!products || products.length === 0) {
+        productContainer.innerHTML = '<p class="text-center">Tidak ada produk</p>';
+        return;
+    }
+    console.log('Rendering products:', products); // Debug log
+    productContainer.innerHTML = products.map(item => `
         <li class="flex justify-between mb-4 items-center p-4 border rounded">
             <div class="flex items-center">
-                <img src="${product.imageUrl}" 
-                     alt="${product.name}" 
-                     class="w-20 h-20 mr-4 object-cover rounded"
-                     onerror="this.src='/placeholder.jpg'">
+        <img 
+            src="${item.imageUrl}" 
+            alt="${item.name}"
+            onerror="this.src='/placeholder.jpg'"
+            class="w-20 h-20 mr-4 object-cover rounded"
+        >
                 <div>
-                    <h3 class="font-bold">${product.name}</h3>
-                    <p>Harga: ${formatCurrency(product.price)}</p>
-                    <p class="text-sm text-gray-600">${product.description}</p>
+                    <h3 class="font-bold">${item.name || 'No Name'}</h3>
+                    <p>Harga: ${formatCurrency(item.price)}</p>
+                    <p class="text-sm text-gray-600">${item.description || '-'}</p>
                 </div>
             </div>
-            <button onclick="deleteProduct('${product._id}')" 
+            <button onclick="deleteProduct('${item._id}')" 
                     class="bg-red-500 hover:bg-red-700 text-white px-4 py-2 rounded">
                 Hapus
             </button>
@@ -113,19 +117,11 @@ function renderProducts(products) {
     `).join('');
 }
 
-// Fungsi untuk format mata uang
-function formatCurrency(amount) {
-    return new Intl.NumberFormat('id-ID', {
-        style: 'currency',
-        currency: 'IDR'
-    }).format(amount);
-}
-
 // Handler form tambah produk
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    if (!authToken) {
+    if (!validPassword) {
         alert('Anda harus login terlebih dahulu');
         return;
     }
@@ -136,45 +132,35 @@ form.addEventListener('submit', async (e) => {
     formData.append('description', form.description.value);
     formData.append('image', form.image.files[0]);
 
-    showLoading();
-
     try {
-        const response = await fetch('http://localhost:5000/api/admin/products', {
+        showLoading();
+        const response = await fetchWithAuth('/api/admin/products', {
             method: 'POST',
-            headers: { 'Authorization': `Bearer ${authToken}` },
             body: formData
         });
 
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.error || 'Gagal menambahkan produk');
-        }
+        if (!response.ok) throw new Error('Gagal menambahkan produk');
 
         form.reset();
         await fetchProducts();
         alert('Produk berhasil ditambahkan!');
     } catch (err) {
         console.error(err);
-        alert(`Error: ${err.message}`);
+        alert('Terjadi kesalahan saat menambahkan produk');
     } finally {
         hideLoading();
     }
 });
 
-// Fungsi untuk hapus produk
+// Fungsi hapus produk
 async function deleteProduct(productId) {
     if (!confirm('Apakah Anda yakin ingin menghapus produk ini?')) return;
 
-    showLoading();
-
     try {
-        const response = await fetch(
-            `http://localhost:5000/api/admin/products/${productId}`,
-            {
-                method: 'DELETE',
-                headers: { 'Authorization': `Bearer ${authToken}` }
-            }
-        );
+        showLoading();
+        const response = await fetchWithAuth(`/api/admin/products/${productId}`, {
+            method: 'DELETE'
+        });
 
         if (!response.ok) throw new Error('Gagal menghapus produk');
 
@@ -182,16 +168,8 @@ async function deleteProduct(productId) {
         alert('Produk berhasil dihapus!');
     } catch (err) {
         console.error(err);
-        alert(`Error: ${err.message}`);
+        alert('Terjadi kesalahan saat menghapus produk');
     } finally {
         hideLoading();
     }
-}
-
-// Fungsi logout
-function logout() {
-    localStorage.removeItem('adminAuthToken');
-    authToken = null;
-    adminContent.classList.add('hidden');
-    passwordModal.classList.remove('hidden');
 }

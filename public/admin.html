@@ -9,7 +9,7 @@
 </head>
 
 <body class="bg-gray-100 min-h-screen flex flex-col justify-center items-center">
-    <!-- Modal untuk input password -->
+    <!-- Password Modal -->
     <div id="passwordModal" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
         <div class="bg-white p-6 rounded shadow-md text-center">
             <h2 class="text-xl font-bold mb-4">Enter Admin Password</h2>
@@ -33,11 +33,10 @@
         </svg>
     </div>
 
-    <!-- Halaman Admin -->
+    <!-- Admin Content -->
     <div id="adminContent" class="hidden w-full max-w-4xl bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
         <h1 class="text-2xl font-bold mb-6">Admin Panel - Product Management</h1>
 
-        <!-- Form untuk menambahkan produk -->
         <form id="addProductForm" class="mb-6">
             <div class="mb-4">
                 <label for="name" class="block text-gray-700 font-bold mb-2">Product Name:</label>
@@ -68,7 +67,6 @@
             </button>
         </form>
 
-        <!-- Daftar produk -->
         <div id="productContainer" class="space-y-4"></div>
     </div>
 
