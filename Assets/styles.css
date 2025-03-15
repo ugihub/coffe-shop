@@ -7,7 +7,7 @@
 
 body {
   font-family: "Arial", sans-serif, "bebas neue";
-  background: url("./img/background.jpg") no-repeat center center/cover;
+  background-color: #000;
   color: #fff;
   line-height: 1.6;
   overflow-x: hidden; /* Prevent horizontal scroll */
