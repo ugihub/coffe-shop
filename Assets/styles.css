@@ -171,21 +171,79 @@ header .nav-links li a:hover {
 }
 
 /* About Section */
-.about {
-  padding: 4rem 2rem;
+.info {
+  background-color: #191919;
+}
+
+.menu-container {
+  width: 80%;
+  max-width: 1000px;
+  padding-top: 15rem;
+  margin-left: 14em;
+}
+.menu-title {
   text-align: center;
-  background-color: #1a1a1a;
+  font-size: 2.5em;
+  margin-bottom: 20px;
+  color: #d4af37;
+}
+.menu {
+  display: flex;
+  justify-content: space-between;
+}
+.menu-column {
+  width: 45%;
+}
+.menu-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.menu-item img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  margin-right: 15px;
+}
+.menu-item .details {
+  flex-grow: 1;
+}
+.menu-item .details h3 {
+  margin: 0;
+  font-size: 1.2em;
+  color: #d4af37;
+}
+.menu-item .details p {
+  margin: 5px 0;
+  color: #ccc;
+}
+.menu-item .price {
+  font-size: 1.1em;
+  color: #d4af37;
 }
 
-.about h2 {
-  font-size: 2.5rem;
-  margin-bottom: 2rem;
-}
-
-.about p {
-  max-width: 600px;
-  margin: 0 auto;
+.banner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5rem;
+  margin-top: 2rem;
+  margin-bottom: 5rem;
   font-size: 1.2rem;
+  text-decoration: none;
+  list-style-type: none;
+  padding: 5em;
+}
+
+.banner li {
+  size: 1.2rem;
+}
+
+.img-2 {
+  width: 70%;
+  left: 14em;
+  position: absolute;
+  top: 64em;
 }
 
 /* Contact Section */
