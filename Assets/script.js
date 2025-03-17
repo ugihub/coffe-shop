@@ -100,3 +100,13 @@ testimonials.forEach((testimonial) => {
 
 // Mulai animasi saat halaman dimuat
 startAnimation();
+
+const navbar = document.getElementById('header');
+
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 50) {
+    navbar.classList.add('blur'); // Tambahkan kelas 'blur' saat di-scroll
+  } else {
+    navbar.classList.remove('blur'); // Hapus kelas 'blur' saat kembali ke atas
+  }
+});

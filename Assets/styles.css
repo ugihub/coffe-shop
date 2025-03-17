@@ -28,6 +28,12 @@ header {
   left: 0;
   width: 100%;
   z-index: 1000;
+  transition: backdrop-filter 0.3s ease, background-color 0.3s ease;
+}
+
+header.blur {
+  backdrop-filter: blur(5px); /* Efek blur */
+  background-color: rgba(0, 0, 0, 0.2); /* Warna lebih pekat untuk navbar */
 }
 
 header .logo {
@@ -42,7 +48,7 @@ header .nav-links {
   display: flex;
   gap: 1.5rem;
   margin-left: auto;
-  margin-right: 4em;  
+  margin-right: 4em;
 }
 
 header .nav-links li a {
@@ -345,14 +351,14 @@ header .nav-links li a:hover {
 .services {
   background-color: #191919;
   color: #fff;
-  padding: 5rem 0;
+  padding: 2rem 0;
   text-align: center;
 }
 
 .services h1 {
   font-size: 2.5em;
   font-weight: bold;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
   color: #fff;
 }
 
@@ -470,8 +476,52 @@ header .nav-links li a:hover {
 
 /* Footer */
 footer {
-  background-color: #3e2723;
-  padding: 1rem;
+  background-color: #000; /* Warna latar belakang hitam */
+  color: white;
+  padding: 20px 0;
   text-align: center;
-  color: #fff;
+  font-family: Arial, sans-serif;
+}
+.container-footer {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+.footer-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+.footer-title {
+  font-size: 24px;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: gold; /* Warna emas untuk efek logo */
+  letter-spacing: 2px;
+}
+.footer-content p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #aaa;
+}
+.footer-content ul {
+  list-style: none; /* Menghilangkan bullet pada list */
+  padding: 0;
+  margin: 15px 0 0;
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap; /* Memastikan elemen responsive */
+}
+.footer-content ul li {
+  font-size: 14px;
+}
+.footer-content ul li a {
+  text-decoration: none;
+  color: white;
+  transition: color 0.3s ease;
+}
+.footer-content ul li a:hover {
+  color: gold; /* Warna emas saat hover */
 }
