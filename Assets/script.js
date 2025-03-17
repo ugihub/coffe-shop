@@ -58,3 +58,45 @@ startScrolling();
 // Pause scroll saat pointer berada di atas container
 container.addEventListener("mouseenter", stopScrolling);
 container.addEventListener("mouseleave", startScrolling);
+
+const testimonials = document.querySelectorAll('.testimonial');
+let currentIndex = 0;
+let interval;
+
+function animateTestimonials() {
+    testimonials.forEach((testimonial, index) => {
+        if (index === currentIndex) {
+            testimonial.classList.add('active');
+        } else {
+            testimonial.classList.remove('active');
+        }
+    });
+    currentIndex = (currentIndex + 1) % testimonials.length; // Loop ke testimonial berikutnya
+}
+
+// Jalankan animasi otomatis
+function startAnimation() {
+    interval = setInterval(animateTestimonials, 2000);
+}
+
+// Hentikan animasi
+function stopAnimation() {
+    clearInterval(interval);
+}
+
+// Tambahkan event listener ke masing-masing testimonial
+testimonials.forEach((testimonial) => {
+    testimonial.addEventListener('mouseenter', () => {
+        stopAnimation();
+        testimonials.forEach((t) => t.classList.remove('active')); // Set semua card kembali semula
+        testimonial.classList.add('hovered'); // Tambahkan efek hover khusus pada card yang di-cursor
+    });
+
+    testimonial.addEventListener('mouseleave', () => {
+        testimonial.classList.remove('hovered'); // Hapus efek hover
+        startAnimation(); // Mulai ulang animasi otomatis
+    });
+});
+
+// Mulai animasi saat halaman dimuat
+startAnimation();

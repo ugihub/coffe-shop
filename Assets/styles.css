@@ -206,17 +206,21 @@ header .nav-links li a:hover {
 .container {
   text-align: center;
   margin-top: 5em;
+  margin-bottom: 5em;
 }
+
 .title {
   font-size: 2.5em;
   margin-bottom: 20px;
   color: #d4af37;
 }
+
 .coffee-cards {
   display: flex;
   justify-content: center;
   gap: 20px;
 }
+
 .coffee-card {
   padding: 20px;
   border-radius: 10px;
@@ -231,9 +235,10 @@ header .nav-links li a:hover {
 }
 
 .coffee-card img {
-  width: 100%;
+  width: 200px;
+  height: 200px; /* Membuat skala foto 1:1 */
+  object-fit: cover;
   border-radius: 10px;
-  margin-bottom: 15px;
 }
 .coffee-card h3 {
   margin: 0 0 10px 0;
@@ -249,6 +254,88 @@ header .nav-links li a:hover {
   font-size: 1.2em;
   font-weight: bold;
   color: #d4af37;
+}
+
+/* testimoanial */
+.guestbook {
+  background-color: #1e1e1e;
+  color: #fff;
+  padding: 5rem 0;
+  text-align: center;
+}
+.guestbook-title {
+  font-size: 36px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 40px;
+  position: relative;
+  text-align: center;
+}
+.guestbook-title::before,
+.guestbook-title::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 60px;
+  height: 2px;
+  background-color: white;
+}
+.guestbook-title::before {
+  left: 0;
+  transform: translateX(-150%);
+}
+.guestbook-title::after {
+  right: 0;
+  transform: translateX(150%);
+}
+.testimonial-container {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.testimonial {
+  background-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 10px 10px #000;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 300px;
+  text-align: center;
+  position: relative;
+  transition: all 0.3s ease;
+}
+.testimonial:hover {
+  transform: scale(1.05); /* Efek membesar */
+  box-shadow: 0 8px 20px rgba(255, 255, 255, 0.2); /* Efek bayangan */
+  background-color: white;
+  color: black;
+}
+.testimonial .quote {
+  font-size: 16px;
+  margin-bottom: 15px;
+}
+.testimonial .name {
+  font-weight: bold;
+  margin-top: 10px;
+}
+.testimonial .title {
+  font-size: 14px;
+  color: #ccc;
+}
+.icon-testi {
+  width: 100px;
+  height: 100px;
+  bottom: 11rem;
+  left: -30px;
+  display: flex;
+  position: absolute;
+}
+.testimonial.active {
+  transform: scale(1.05); /* Efek membesar */
+  box-shadow: 0 8px 20px rgba(255, 255, 255, 0.2); /* Efek bayangan */
+  background-color: white;
+  color: black;
 }
 
 /* services Section */
@@ -267,7 +354,7 @@ header .nav-links li a:hover {
 
 .scroll-container {
   display: flex;
-  gap: 10px;
+  gap: 20px;
   overflow: hidden;
   position: relative;
   width: 100%;
@@ -287,7 +374,8 @@ header .nav-links li a:hover {
   justify-content: center;
   align-items: center;
   overflow: hidden;
-  transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.3s ease, background-color 0.3s ease,
+    box-shadow 0.3s ease;
 }
 .card:hover {
   transform: translateY(-10px); /* Mengangkat kartu */
@@ -338,6 +426,46 @@ header .nav-links li a:hover {
   100% {
     transform: translateX(calc(-100% - 30px)); /* Konten digeser ke kiri */
   }
+}
+
+/* Contact */
+.container-contact {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  grid-gap: 20px;
+  width: 70%;
+  color: white;
+  max-width: 100%;
+  text-align: center;
+  margin-top: 7em;
+  margin-left: 14em;
+}
+.card-contact {
+  background-color: #121212; /* Warna dasar kartu */
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.card-contact:hover {
+  transform: scale(1.05); /* Efek timbul */
+  box-shadow: 0 8px 20px rgba(255, 255, 255, 0.2);
+}
+.icon-contact {
+  font-size: 40px;
+  margin-bottom: 10px;
+  color: gold; /* Warna emas */
+}
+.title-contact {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: gold; /* Warna emas */
+}
+.details-contact {
+  font-size: 16px;
+  line-height: 1.5;
 }
 
 /* Footer */
