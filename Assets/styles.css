@@ -130,7 +130,6 @@ header .nav-links li a:hover {
 .info {
   background-color: #191919;
 }
-
 .menu-container {
   width: 80%;
   max-width: 1000px;
@@ -149,6 +148,7 @@ header .nav-links li a:hover {
 }
 .menu-column {
   width: 45%;
+  margin-bottom: 5rem;
 }
 .menu-item {
   display: flex;
@@ -434,12 +434,11 @@ header .nav-links li a:hover {
   justify-content: center;
   align-items: center;
   grid-gap: 20px;
-  width: 70%;
+  width: 80%;
   color: white;
   max-width: 100%;
   text-align: center;
-  margin-top: 7em;
-  margin-left: 14em;
+  margin: 10em;
 }
 .card-contact {
   background-color: #121212; /* Warna dasar kartu */
