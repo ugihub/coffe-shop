@@ -240,6 +240,7 @@ header .nav-links li a:hover {
   height: 60px;
   border-radius: 50%;
   margin-right: 15px;
+  object-fit: cover;
 }
 .menu-item .details {
   flex-grow: 1;
