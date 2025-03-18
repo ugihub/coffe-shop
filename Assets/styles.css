@@ -467,10 +467,17 @@ header .nav-links {
 }
 /* Responsive Menu Section */
 @media (max-width: 1024px) {
+  .info {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
   .menu-container {
     margin-left: 0;
     width: 90%;
-    padding-top: 8rem;
+    padding: 5rem 0;
   }
 
   .menu-title,
@@ -478,12 +485,13 @@ header .nav-links {
   .about-title,
   .service-title {
     font-size: clamp(1.5rem, 4vw, 2rem);
+    margin-bottom: 2rem;
   }
 
   .menu {
     flex-direction: column;
     align-items: center;
-    gap: 2rem;
+    padding-top: 0;
   }
 
   .menu-item {
@@ -493,12 +501,14 @@ header .nav-links {
 
   .menu-column {
     width: 100%;
-    padding: 2rem;
     margin-bottom: 0;
+    margin-top: 0;
+    padding-left: 2rem;
+    padding-right: 2rem;
   }
 
   .menu-column:last-child {
-    border-bottom: none;
+    border-bottom: block;
     margin-bottom: 0;
     padding-bottom: 0;
   }
@@ -508,7 +518,6 @@ header .nav-links {
   .menu-container {
     margin-left: 0;
     width: 100%;
-    padding-top: 4rem;
   }
 
   .menu-title,
@@ -516,13 +525,31 @@ header .nav-links {
   .about-title,
   .service-title {
     font-size: 1.75rem;
-    padding: 1rem;
+  }
+
+  .menu {
+    flex-direction: column;
+    align-items: center;
+    padding-top: 0;
+  }
+
+  .menu-item {
+    width: 100%;
+    height: auto;
   }
 
   .menu-column {
     width: 100%;
-    padding: 2rem;
     margin-bottom: 0;
+    margin-top: 0;
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+
+  .menu-column:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
   }
 }
 
@@ -536,6 +563,10 @@ header .nav-links {
   .about-title,
   .service-title {
     font-size: 1.5rem;
+  }
+
+  .line {
+    width: 20px;
   }
 
   .menu-item {
@@ -972,7 +1003,7 @@ header .nav-links {
   .container-contact {
     margin: 6em 2em;
     flex-direction: column;
-    align-items: center; /* Tambahkan ini */
+    align-items: center; /* Tambahkan ini */;
   }
 
   .card-contact {
@@ -983,7 +1014,7 @@ header .nav-links {
   }
 
   .icon-contact {
-    margin-left: 8rem;
+    margin-left: 8.5rem;
     margin-bottom: 15px;
   }
 
