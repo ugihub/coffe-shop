@@ -19,6 +19,7 @@ a {
 }
 
 /* Navbar Styles */
+/* Style default header */
 header {
   padding: 1rem 5rem;
   display: flex;
@@ -49,14 +50,42 @@ header .nav-links {
   gap: 1.5rem;
   margin-left: auto;
   margin-right: 4em;
+  transition: transform 0.3s ease; /* Efek smooth saat membuka */
 }
 
-header .nav-links li a {
-  transition: color 0.3s ease;
+/* Burger menu style */
+.burger-menu {
+  display: none;
+  font-size: 2rem;
+  cursor: pointer;
+  margin-left: auto;
+  margin-right: 4em;
 }
 
-header .nav-links li a:hover {
-  color: #d2b48c;
+/* Styling untuk Mobile */
+@media (max-width: 768px) {
+  .burger-menu {
+    display: block; /* Tampilkan menu burger */
+  }
+
+  .nav-links {
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    transform: translateY(-200%); /* Sembunyikan navbar saat awal */
+  }
+
+  .nav-links li {
+    margin: 1rem 0;
+  }
+
+  .nav-links.show {
+    transform: translateY(0); /* Tampilkan navbar */
+  }
 }
 
 /* Hero Section */
@@ -576,4 +605,61 @@ footer {
 }
 .footer-content ul li a:hover {
   color: gold; /* Warna emas saat hover */
+}
+
+/* profile */
+.container-profile {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  height: 100vh;
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.left-section {
+  background-color: #000;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer; /* Menambahkan kursor interaktif */
+}
+
+.left-section .chef-image {
+  width: 100%; /* Gambar akan memenuhi lebar kuadran */
+  height: 100%; /* Gambar akan memenuhi tinggi kuadran */
+  object-fit: cover; /* Memastikan gambar terpotong rapi agar sesuai dengan frame */
+  margin: 0; /* Menghapus margin */
+  padding: 0; /* Menghapus padding */
+  display: block; /* Menghilangkan space default pada gambar */
+}
+
+.right-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+}
+
+.right-section .quadrant {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background-color: #fff;
+  border: 1px solid #191919; /* Menambahkan garis pemisah */
+}
+
+.right-section .quadrant img {
+  width: 100%; /* Gambar akan memenuhi lebar kuadran */
+  height: 100%; /* Gambar akan memenuhi tinggi kuadran */
+  object-fit: cover; /* Memastikan gambar terpotong rapi agar sesuai dengan frame */
+  margin: 0; /* Menghapus margin */
+  padding: 0; /* Menghapus padding */
+  display: block; /* Menghilangkan space default pada gambar */
+}
+
+.right-section .quadrant h2 {
+  font-size: 24px;
+  color: #000;
 }
