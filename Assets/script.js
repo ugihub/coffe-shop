@@ -110,3 +110,4 @@ window.addEventListener('scroll', () => {
         navbar.classList.remove('blur'); // Hapus kelas 'blur' saat kembali ke atas
     }
 });
+
