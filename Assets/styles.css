@@ -19,8 +19,9 @@ a {
 }
 
 /* Navbar Styles */
+/* Header Responsive */
 header {
-  padding: 1rem 5rem;
+  padding: 1rem 2rem; /* Ubah dari 5rem ke 2rem */
   display: flex;
   align-items: center;
   position: fixed;
@@ -32,37 +33,60 @@ header {
 }
 
 header.blur {
-  backdrop-filter: blur(5px); /* Efek blur */
-  background-color: rgba(0, 0, 0, 0.2); /* Warna lebih pekat untuk navbar */
+  backdrop-filter: blur(5px);
+  background-color: rgba(0, 0, 0, 0.2);
 }
 
 header .logo {
-  font-size: 1.5rem;
+  font-size: 1.25rem; /* 20px */
   font-weight: bold;
   margin-right: auto;
-  margin-left: 4em;
+  margin-left: 5rem; /* Ubah dari 4em ke 1rem */
+  white-space: nowrap;
 }
 
 header .nav-links {
   list-style: none;
   display: flex;
+  gap: 1.25rem;
+  margin-left: auto;
+  margin-right: 1rem; /* Ubah dari 4em ke 1rem */
+}
+
+header .nav-links a:hover {
+  color: #d3ad7f;
+}
+
+/* Mobile Menu */
+.menu-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 3px;
+  cursor: pointer;
+  margin-left: auto;
+  padding: 10px;
+}
+
+.menu-toggle span {
+  width: 25px;
+  height: 3px;
+  background: white;
+  transition: transform 0.3s ease;
+}
+
+/* Style untuk menu mobile */
+header .nav-links {
+  list-style: none;
+  display: flex;
   gap: 1.5rem;
   margin-left: auto;
-  margin-right: 4em;
+  margin-right: 1rem;
 }
 
-header .nav-links li a {
-  transition: color 0.3s ease;
-}
-
-header .nav-links li a:hover {
-  color: #d2b48c;
-}
-
-/* Hero Section */
+/* Hero Section Responsive */
 .hero {
   position: relative;
-  height: 100vh;
+  height: 100vh; /* Ubah dari height ke min-height */
   overflow: hidden;
   background: url("./img/background.png") no-repeat center center/cover;
   z-index: 1;
@@ -77,50 +101,146 @@ header .nav-links li a:hover {
   height: 100%;
   background: linear-gradient(
     to top,
-    rgba(16, 16, 17, 2),
+    rgba(16, 16, 17, 0.8),
     rgba(16, 16, 17, 0.5)
-  ); /* Gradient shadow */
-  z-index: 1; /* Di atas background, tetapi di bawah konten */
+  );
+  z-index: 1;
 }
 
 .hero-content {
   position: relative;
-  z-index: 2; /* Pastikan konten berada di atas gradient */
+  z-index: 2;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: start;
+  align-items: flex-start;
   height: 100%;
-  text-align: start;
-  margin-left: 10em;
-  word-wrap: break-word;
+  text-align: left;
+  padding: 0 2rem; /* Tambahkan padding */
+  max-width: 1440px;
+  margin: 0 auto;
+  margin-left: 5em;
 }
 
 .hero h1 {
-  font-size: 3.5rem;
+  font-size: clamp(2rem, 6vw, 3.5rem);
   font-weight: bold;
+  line-height: 1.2;
 }
 
 .hero p {
-  font-size: 1.2rem;
+  font-size: clamp(1rem, 4vw, 1.2rem);
   margin-bottom: 2rem;
   opacity: 0.6;
 }
 
 .hero ul {
-  color: #1a1a1a;
-  border-radius: 5px;
-  transition: background-color 0.3s ease;
   display: flex;
-  list-style-type: none;
+  list-style: none;
   gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 1024px) {
+  .hero-content {
+    align-items: center;
+    text-align: center;
+    padding: 0 1.5rem;
+  }
+
+  .hero h1 {
+    font-size: 3rem;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Header Mobile */
+  header .nav-links {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    right: 0;
+    flex-direction: column;
+    background: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    padding: 1rem;
+    display: none;
+    border-radius: 5px;
+  }
+
+  header .nav-links.active {
+    display: flex;
+    text-align: center;
+  }
+
+  .menu-toggle {
+    display: flex;
+  }
+
+  header .logo {
+    margin-left: 0;
+  }
+
+  /* Animasi transform untuk tombol close */
+  .menu-toggle.active span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+  }
+
+  .menu-toggle.active span:nth-child(2) {
+    opacity: 0;
+  }
+
+  .menu-toggle.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
+  }
+
+  /* Hero Mobile */
+  .hero {
+    min-height: 80vh;
+  }
+
+  .hero-content {
+    margin-left: 0;
+  }
+
+  .hero h1 {
+    font-size: 2.5rem;
+  }
+
+  .hero p {
+    font-size: 1rem;
+    margin-top: 1rem;
+  }
+
+  .btn-i {
+    margin-top: 0.2rem;
+  }
+
+  .btn-e {
+    margin-top: 0.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero {
+    min-height: 60vh;
+  }
+
+  .hero h1 {
+    font-size: 2rem;
+  }
+
+  .hero p {
+    font-size: 0.9rem;
+  }
 }
 
 /* Button dengan background color */
 .btn-i {
   display: inline-block;
   padding: 0.5rem 2rem;
-  background-color: #D3AD7F; /* Warna latar */
+  background-color: #d3ad7f; /* Warna latar */
   color: white; /* Warna teks */
   text-decoration: none;
   font-size: 1rem;
@@ -131,8 +251,8 @@ header .nav-links li a:hover {
 
 .btn-i:hover {
   background-color: transparent; /* Hilangkan latar belakang saat hover */
-  border: 2px solid #D3AD7F; /* Border warna hijau */
-  color: #D3AD7F; /* Warna teks berubah */
+  border: 2px solid #d3ad7f; /* Border warna hijau */
+  color: #d3ad7f; /* Warna teks berubah */
 }
 
 /* Button dengan hanya border */
@@ -140,18 +260,105 @@ header .nav-links li a:hover {
   display: inline-block;
   padding: 0.5rem 2rem;
   background-color: transparent; /* Tidak ada latar belakang */
-  color: #D3AD7F; /* Warna teks hijau */
+  color: #d3ad7f; /* Warna teks hijau */
   text-decoration: none;
   font-size: 1rem;
-  border: 2px solid #D3AD7F; /* Border warna hijau */
+  border: 2px solid #d3ad7f; /* Border warna hijau */
   border-radius: 5px; /* Opsional: sudut membulat */
   transition: all 0.3s ease; /* Transisi halus */
 }
 
 .btn-e:hover {
-  background-color: #D3AD7F; /* Tambahkan latar belakang hijau saat hover */
+  background-color: #d3ad7f; /* Tambahkan latar belakang hijau saat hover */
   color: white; /* Warna teks berubah menjadi putih */
   border: 2px solid transparent; /* Hilangkan border */
+}
+
+/* Banner */
+.banner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3rem;
+  margin-top: 1rem;
+  margin-bottom: 5rem;
+  font-size: 0.8rem;
+  text-decoration: none;
+  list-style-type: none;
+  padding: 5em;
+}
+.banner li p {
+  size: 1.2rem;
+  opacity: 0.7;
+}
+.banner li a {
+  size: 0.8rem;
+  text-decoration: underline;
+  font-weight: bold;
+}
+.img-2 {
+  width: 70%;
+  left: 12em;
+  position: absolute;
+  top: 53em;
+  z-index: 1000;
+}
+.img-2.fade-in-section:hover {
+  transform: scale(1.05);
+  transition: 0.3s;
+}
+/* Responsive Banner */
+@media (max-width: 1024px) {
+  .banner {
+    padding: 3em 2em;
+    gap: 1.5rem;
+  }
+
+  .banner li {
+    text-align: center;
+  }
+
+  .img-2 {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .banner {
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .banner li p {
+    font-size: 1.1rem;
+  }
+
+  .img-2 {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .banner {
+    padding: 2em 1em;
+    margin-top: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .banner li a {
+    font-size: 0.9rem;
+  }
+
+  .img-2 {
+    width: 100% !important;
+    margin: 0.5rem auto 0;
+  }
 }
 
 /* menu Section */
@@ -258,41 +465,92 @@ header .nav-links li a:hover {
   font-size: 1.1em;
   color: #d4af37;
 }
+/* Responsive Menu Section */
+@media (max-width: 1024px) {
+  .menu-container {
+    margin-left: 4em;
+    width: 90%;
+    padding-top: 8rem;
+  }
 
-.banner {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 3rem;
-  margin-top: 1rem;
-  margin-bottom: 5rem;
-  font-size: 0.8rem;
-  text-decoration: none;
-  list-style-type: none;
-  padding: 5em;
+  .menu-title,
+  .ex-title,
+  .about-title,
+  .service-title {
+    font-size: clamp(1.5rem, 4vw, 2rem);
+  }
+
+  .menu {
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .menu-item {
+    width: 100%;
+    height: auto;
+  }
+
+  .menu-column {
+    width: 100%;
+    padding: 2rem;
+    margin-bottom: 0;
+  }
+
+  .menu-column:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
 }
 
-.banner li p {
-  size: 1.2rem;
-  opacity: 0.7;
-}
-.banner li a {
-  size: 0.8rem;
-  text-decoration: underline;
-  font-weight: bold;
+@media (max-width: 768px) {
+  .menu-container {
+    margin-left: 1em;
+    width: 100%;
+    padding-top: 4rem;
+    height: 100vh; /* Pastikan 100vh di mobile */
+  }
+
+  .menu-title,
+  .ex-title,
+  .about-title,
+  .service-title {
+    font-size: 1.75rem;
+    padding: 1rem;
+  }
+
+  .menu-column {
+    width: 100%;
+    padding: 2rem;
+    margin-bottom: 0;
+  }
 }
 
-.img-2 {
-  width: 70%;
-  left: 12em;
-  position: absolute;
-  top: 58em;
-  z-index: 1000;
-}
+@media (max-width: 480px) {
+  .menu-container {
+    padding-top: 3rem;
+  }
 
-.img-2.fade-in-section:hover {
-  transform: scale(1.05);
-  transition: 0.3s;
+  .menu-title,
+  .ex-title,
+  .about-title,
+  .service-title {
+    font-size: 1.5rem;
+  }
+
+  .menu-item {
+    width: 100%;
+    height: auto;
+  }
+
+  .menu-item .details p {
+    font-size: 0.8rem;
+  }
+
+  .menu-item .price {
+    font-size: 1rem;
+  }
 }
 
 /* coffe card */
@@ -349,6 +607,83 @@ header .nav-links li a:hover {
   font-size: 1.2em;
   font-weight: bold;
   color: #d4af37;
+}
+/* Responsive Coffee Cards */
+@media (max-width: 1024px) {
+  .container {
+    margin-top: 6em;
+  }
+
+  .title {
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+  }
+
+  .coffee-cards {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+  }
+
+  .coffee-card {
+    width: 45%;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    margin-top: 4em;
+    height: auto;
+  }
+
+  .coffee-cards {
+    gap: 10px;
+  }
+
+  .coffee-card {
+    width: 100%;
+    padding: 15px;
+  }
+
+  .coffee-card img {
+    width: 100%;
+    height: auto;
+    max-width: 200px;
+  }
+
+  .title {
+    font-size: 2rem;
+  }
+
+  .coffee-card h3 {
+    font-size: 1.3rem;
+  }
+
+  .coffee-card p {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    margin-top: 2em;
+    margin-bottom: 3em;
+  }
+
+  .coffee-card {
+    padding: 10px;
+  }
+
+  .coffee-card img {
+    max-width: 180px;
+  }
+
+  .title {
+    font-size: 1.75rem;
+  }
+
+  .coffee-card .price {
+    font-size: 1.1rem;
+  }
 }
 
 /* testimoanial */
@@ -560,6 +895,71 @@ header .nav-links li a:hover {
   font-size: 16px;
   line-height: 1.5;
 }
+/* Responsive Contact Section */
+@media (max-width: 1024px) {
+  .container-contact {
+    margin: 6em 2em;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .card-contact {
+    width: 100%;
+    padding: 15px;
+  }
+
+  .icon-contact {
+    margin-left: 0;
+    margin-bottom: 15px;
+  }
+
+  .title-contact {
+    font-size: 1.25rem;
+  }
+
+  .details-contact {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .container-contact {
+    margin: 4em 1em;
+    grid-gap: 15px;
+  }
+
+  .card-contact {
+    padding: 10px;
+  }
+
+  .icon-contact {
+    width: 40px;
+    height: 40px;
+  }
+
+  .title-contact {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .container-contact {
+    margin: 2em 0.5em;
+  }
+
+  .card-contact {
+    padding: 8px;
+  }
+
+  .icon-contact {
+    width: 35px;
+    height: 35px;
+  }
+
+  .details-contact {
+    font-size: 0.8rem;
+  }
+}
 
 /* Footer */
 footer {
@@ -611,6 +1011,67 @@ footer {
 }
 .footer-content ul li a:hover {
   color: gold; /* Warna emas saat hover */
+}
+/* Responsive Footer */
+@media (max-width: 1024px) {
+  .footer-title {
+    font-size: clamp(1.2rem, 3vw, 1.5rem);
+    letter-spacing: 1.5px;
+  }
+
+  .footer-content p {
+    font-size: 15px;
+  }
+
+  .footer-content ul {
+    gap: 15px;
+    justify-content: center;
+  }
+
+  .footer-content ul li {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 768px) {
+  .footer-content {
+    gap: 10px;
+  }
+
+  .footer-title {
+    font-size: 1.2rem;
+    line-height: 1.2;
+  }
+
+  .footer-content p {
+    font-size: 14px;
+    margin: 5px 0;
+  }
+
+  .footer-content ul {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .footer-content ul li {
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer-title {
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+  }
+
+  .footer-content {
+    padding: 0 10px;
+  }
+
+  .footer-content ul li a {
+    font-size: 13px;
+  }
 }
 
 /* profile */
@@ -668,6 +1129,26 @@ footer {
 .right-section .quadrant h2 {
   font-size: 24px;
   color: #000;
+}
+/* Responsive Profile Section */
+@media (max-width: 768px) {
+  .container-profile {
+    grid-template-columns: 1fr;
+    height: auto;
+    min-height: 100vh;
+  }
+
+  .left-section {
+    height: 30vh;
+  }
+
+  .right-section {
+    height: 70vh;
+  }
+
+  .right-section .quadrant h2 {
+    font-size: 1.25rem;
+  }
 }
 
 /* fade animation */
