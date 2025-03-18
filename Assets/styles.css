@@ -163,6 +163,10 @@ header .nav-links li a:hover {
   display: flex;
   align-items: center;
   margin-bottom: 20px;
+  border-bottom: 1px solid #e0e0e0; /* Menambahkan garis bawah */
+}
+.menu-item:last-child {
+  border-bottom: none; /* Menghilangkan garis bawah pada item terakhir */
 }
 .menu-item img {
   width: 60px;
