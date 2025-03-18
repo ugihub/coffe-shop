@@ -972,6 +972,7 @@ header .nav-links {
   max-width: 100%;
   text-align: center;
   margin: 10em;
+  text-align: center;
 }
 .card-contact {
   padding: 20px;
@@ -982,11 +983,19 @@ header .nav-links {
   background-color: #191919;
 }
 .icon-contact {
-  margin-left: 60px;
-  width: 50px;
-  height: 50px;
+  display: flex;
+  justify-content: center; /* Menjaga ikon tetap horizontal di tengah */
+  align-items: center; /* Menjaga ikon tetap vertikal di tengah */
+  width: 100%;
+  height: 100%;
   margin-bottom: 20px;
   color: #fff; /* Warna emas */
+}
+.icon-contact svg {
+  width: 50px; /* Atur ukuran ikon, bisa diubah sesuai kebutuhan */
+  height: 50px; /* Menjaga proporsi */
+  display: block; /* Menghapus margin bawaan SVG */
+  object-fit: contain; /* Menjaga isi tetap proporsional */
 }
 .title-contact {
   font-size: 18px;
@@ -1003,7 +1012,7 @@ header .nav-links {
   .container-contact {
     margin: 6em 2em;
     flex-direction: column;
-    align-items: center; /* Tambahkan ini */;
+    align-items: center; /* Tambahkan ini */
   }
 
   .card-contact {
@@ -1014,7 +1023,6 @@ header .nav-links {
   }
 
   .icon-contact {
-    margin-left: 8rem;
     margin-bottom: 15px;
   }
 
@@ -1042,11 +1050,6 @@ header .nav-links {
     width: 100%; /* Pastikan lebar 100% */
   }
 
-  .icon-contact {
-    width: 40px;
-    height: 40px;
-  }
-
   .title-contact {
     font-size: 1.1rem;
   }
@@ -1061,11 +1064,6 @@ header .nav-links {
   .card-contact {
     padding: 8px;
     width: 100%;
-  }
-
-  .icon-contact {
-    width: 35px;
-    height: 35px;
   }
 
   .details-contact {
