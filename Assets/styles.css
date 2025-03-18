@@ -468,7 +468,7 @@ header .nav-links {
 /* Responsive Menu Section */
 @media (max-width: 1024px) {
   .menu-container {
-    margin-left: 4em;
+    margin-left: 0;
     width: 90%;
     padding-top: 8rem;
   }
@@ -506,7 +506,7 @@ header .nav-links {
 
 @media (max-width: 768px) {
   .menu-container {
-    margin-left: 1em;
+    margin-left: 0;
     width: 100%;
     padding-top: 4rem;
   }
@@ -582,7 +582,7 @@ header .nav-links {
 .coffee-card:hover {
   transform: translateY(-10px);
   transition: 0.3s;
-  background-color: #191919;
+  background-color: #d3ad7f;
 }
 
 .coffee-card img {
@@ -637,12 +637,17 @@ header .nav-links {
   .coffee-card {
     width: 100%;
     padding: 15px;
+    margin: 2rem;
+    margin-top: 0;
+    border: 1px solid #d3ad7f; /* Border warna hijau */
   }
 
   .coffee-card img {
     width: 100%;
     height: auto;
     max-width: 200px;
+    margin: -3rem;
+    margin-bottom: -5rem;
   }
 
   .title {
@@ -967,16 +972,18 @@ header .nav-links {
   .container-contact {
     margin: 6em 2em;
     flex-direction: column;
-    align-items: center;
+    align-items: center; /* Tambahkan ini */
   }
 
   .card-contact {
     width: 100%;
     padding: 15px;
+    margin-left: 2rem; /* Auto margin untuk centering */
+    margin-right: auto;
   }
 
   .icon-contact {
-    margin-left: 0;
+    margin-left: 8rem;
     margin-bottom: 15px;
   }
 
@@ -993,10 +1000,15 @@ header .nav-links {
   .container-contact {
     margin: 4em 1em;
     grid-gap: 15px;
+    display: flex;
+    flex-direction: column; /* Tambahkan ini */
+    align-items: center; /* Tambahkan ini */
+    justify-content: center; /* Tambahkan ini */
   }
 
   .card-contact {
     padding: 10px;
+    width: 100%; /* Pastikan lebar 100% */
   }
 
   .icon-contact {
@@ -1012,10 +1024,12 @@ header .nav-links {
 @media (max-width: 480px) {
   .container-contact {
     margin: 2em 0.5em;
+    align-items: center; /* Tambahkan ini */
   }
 
   .card-contact {
     padding: 8px;
+    width: 100%;
   }
 
   .icon-contact {
@@ -1027,7 +1041,6 @@ header .nav-links {
     font-size: 0.8rem;
   }
 }
-
 /* Footer */
 footer {
   background-color: #000; /* Warna latar belakang hitam */
@@ -1116,7 +1129,6 @@ footer {
   }
 
   .footer-content ul {
-    flex-direction: column;
     align-items: center;
     gap: 10px;
   }
