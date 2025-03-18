@@ -98,12 +98,13 @@ header .nav-links li a:hover {
 
 .hero h1 {
   font-size: 3.5rem;
-  margin-bottom: 1rem;
+  font-weight: bold;
 }
 
 .hero p {
   font-size: 1.2rem;
   margin-bottom: 2rem;
+  opacity: 0.6;
 }
 
 .hero ul {
@@ -111,27 +112,46 @@ header .nav-links li a:hover {
   border-radius: 5px;
   transition: background-color 0.3s ease;
   display: flex;
+  list-style-type: none;
+  gap: 10px;
 }
 
+/* Button dengan background color */
 .btn-i {
-  display: inline;
-  margin-right: 1rem;
-  background-color: #d2b48c;
-  padding: 0.5rem 1rem;
-  border-radius: 5px;
+  display: inline-block;
+  padding: 0.5rem 2rem;
+  background-color: #D3AD7F; /* Warna latar */
+  color: white; /* Warna teks */
+  text-decoration: none;
+  font-size: 1rem;
+  border: 2px solid transparent; /* Tidak ada border awalnya */
+  border-radius: 5px; /* Opsional: sudut membulat */
+  transition: all 0.3s ease; /* Transisi halus */
 }
 
+.btn-i:hover {
+  background-color: transparent; /* Hilangkan latar belakang saat hover */
+  border: 2px solid #D3AD7F; /* Border warna hijau */
+  color: #D3AD7F; /* Warna teks berubah */
+}
+
+/* Button dengan hanya border */
 .btn-e {
-  display: inline;
-  margin-right: 1rem;
-  border-color: #d2b48c;
-  padding: 0.5rem 1rem;
-  border-radius: 5px;
-  border-width: 100px;
+  display: inline-block;
+  padding: 0.5rem 2rem;
+  background-color: transparent; /* Tidak ada latar belakang */
+  color: #D3AD7F; /* Warna teks hijau */
+  text-decoration: none;
+  font-size: 1rem;
+  border: 2px solid #D3AD7F; /* Border warna hijau */
+  border-radius: 5px; /* Opsional: sudut membulat */
+  transition: all 0.3s ease; /* Transisi halus */
 }
 
-.hero ul li:hover {
-  background-color: #fff;
+.btn-e:hover {
+  background-color: #D3AD7F; /* Tambahkan latar belakang hijau saat hover */
+  color: white; /* Warna teks berubah menjadi putih */
+  border: 2px solid transparent; /* Hilangkan border */
 }
 
 /* menu Section */
@@ -142,7 +162,8 @@ header .nav-links li a:hover {
   margin-left: 8em;
   width: 80%;
   max-width: 1000px;
-  padding-top: 15rem;
+  padding-top: 12rem;
+  height: 100vh;
 }
 .menu-title {
   display: flex;
@@ -259,13 +280,20 @@ header .nav-links li a:hover {
   left: 12em;
   position: absolute;
   top: 60.5em;
+  z-index: 1000;
+}
+
+.img-2.fade-in-section:hover {
+  transform: scale(1.05);
+  transition: 0.3s;
 }
 
 /* coffe card */
 .container {
   text-align: center;
-  margin-top: 5em;
+  margin-top: 10em;
   margin-bottom: 5em;
+  height: 80vh;
 }
 
 .title {
@@ -633,4 +661,16 @@ footer {
 .right-section .quadrant h2 {
   font-size: 24px;
   color: #000;
+}
+
+/* fade animation */
+.fade-in-section {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.6s ease-out;
+}
+
+.fade-in-section.active {
+  opacity: 1;
+  transform: translateY(0);
 }
