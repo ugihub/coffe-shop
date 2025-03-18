@@ -144,7 +144,7 @@ header .nav-links li a:hover {
   padding-top: 15rem;
   margin-left: 14em;
 }
-.title {
+.menu-title {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -154,6 +154,39 @@ header .nav-links li a:hover {
   font-weight: bold;
   text-transform: uppercase; /* Huruf besar semua */
   margin-bottom: 20px;
+}
+.ex-title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white; /* Warna teks putih */
+  font-family: Arial, sans-serif;
+  font-size: 30px;
+  font-weight: bold;
+  text-transform: uppercase; /* Huruf besar semua */
+  margin-bottom: 20px;
+}
+.about-title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white; /* Warna teks putih */
+  font-family: Arial, sans-serif;
+  font-size: 30px;
+  font-weight: bold;
+  text-transform: uppercase; /* Huruf besar semua */
+  margin-bottom: 25px;
+}
+.service-title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white; /* Warna teks putih */
+  font-family: Arial, sans-serif;
+  font-size: 30px;
+  font-weight: bold;
+  text-transform: uppercase; /* Huruf besar semua */
+  margin-bottom: 25px;
 }
 .line {
   width: 50px; /* Atur panjang garis */
