@@ -10,7 +10,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 
 // JavaScript untuk menghapus efek blur saat scroll
 window.addEventListener('scroll', () => {
-    const heroBackground = document.querySelector('.hero-background');
+    const heroBackground = document.querySelector('.hero-content');
     const heroSection = document.querySelector('.hero');
 
     // Hitung posisi scroll
@@ -110,20 +110,6 @@ window.addEventListener('scroll', () => {
         navbar.classList.remove('blur'); // Hapus kelas 'blur' saat kembali ke atas
     }
 });
-
-//document.querySelectorAll('.nav-links a').forEach(anchor => {
-//     anchor.addEventListener('click', function (e) {
-//         e.preventDefault(); // Cegah perilaku default link
-//         const targetId = this.getAttribute('href').substring(1); // Ambil ID target
-//         const targetElement = document.getElementById(targetId);
-
-//         // Scroll ke target dengan offset
-//         window.scrollTo({
-//             top: targetElement.offsetTop - 80, // Tambahkan offset (80px ke atas)
-//             behavior: 'smooth' // Scroll dengan efek smooth
-//         });
-//     });
-// });
 
 document.addEventListener('DOMContentLoaded', () => {
     const sections = document.querySelectorAll('.fade-in-section');
