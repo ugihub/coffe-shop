@@ -199,7 +199,7 @@ document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('.coffee-card').forEach(function (card) {
         card.addEventListener('click', function () {
             var targetModal = card.getAttribute('data-target');
-            openModal(targetModal.substring(1)); // Hapus tanda # dari ID
+            openModal(targetModal.substring(1));
         });
     });
 });
