@@ -111,19 +111,19 @@ window.addEventListener('scroll', () => {
     }
 });
 
-document.querySelectorAll('.nav-links a').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault(); // Cegah perilaku default link
-        const targetId = this.getAttribute('href').substring(1); // Ambil ID target
-        const targetElement = document.getElementById(targetId);
+//document.querySelectorAll('.nav-links a').forEach(anchor => {
+//     anchor.addEventListener('click', function (e) {
+//         e.preventDefault(); // Cegah perilaku default link
+//         const targetId = this.getAttribute('href').substring(1); // Ambil ID target
+//         const targetElement = document.getElementById(targetId);
 
-        // Scroll ke target dengan offset
-        window.scrollTo({
-            top: targetElement.offsetTop - 80, // Tambahkan offset (80px ke atas)
-            behavior: 'smooth' // Scroll dengan efek smooth
-        });
-    });
-});
+//         // Scroll ke target dengan offset
+//         window.scrollTo({
+//             top: targetElement.offsetTop - 80, // Tambahkan offset (80px ke atas)
+//             behavior: 'smooth' // Scroll dengan efek smooth
+//         });
+//     });
+// });
 
 document.addEventListener('DOMContentLoaded', () => {
     const sections = document.querySelectorAll('.fade-in-section');
@@ -157,4 +157,49 @@ document.addEventListener('click', (e) => {
         navLinks.classList.remove('active');
         menuToggle.classList.remove('active');
     }
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+    // Fungsi untuk membuka modal
+    function openModal(modalId) {
+        var modal = document.getElementById(modalId);
+        modal.style.display = "block";
+    }
+
+    // Fungsi untuk menutup modal
+    function closeModal(modalId) {
+        var modal = document.getElementById(modalId);
+        modal.style.display = "none";
+    }
+
+    // Event listener untuk tombol close
+    document.querySelectorAll('.modal .close').forEach(function (closeBtn) {
+        closeBtn.addEventListener('click', function () {
+            closeModal(this.closest('.modal').id);
+        });
+    });
+
+    // Event listener untuk klik di luar modal
+    window.addEventListener('click', function (event) {
+        if (event.target.classList.contains('modal')) {
+            event.target.style.display = "none";
+        }
+    });
+
+    // Event listener untuk form submission
+    document.querySelectorAll('.order-form').forEach(function (form) {
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            alert('Terima kasih! Pesanan Anda telah diterima.');
+            closeModal(this.closest('.modal').id);
+        });
+    });
+
+    // Event listener untuk membuka modal dari card
+    document.querySelectorAll('.coffee-card').forEach(function (card) {
+        card.addEventListener('click', function () {
+            var targetModal = card.getAttribute('data-target');
+            openModal(targetModal.substring(1)); // Hapus tanda # dari ID
+        });
+    });
 });
