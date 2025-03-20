@@ -610,11 +610,10 @@ header .nav-links {
   border-radius: 10px;
   width: 250px;
 }
-
 .coffee-card:hover {
   transform: translateY(-10px);
   transition: 0.3s;
-  background-color: #d3ad7f;
+  background-color: #191919;
 }
 
 .coffee-card img {
@@ -840,7 +839,6 @@ header .nav-links {
   .modal .price {
     font-size: 1.1rem;
   }
-  
 }
 
 /* testimoanial */
