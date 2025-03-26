@@ -1335,8 +1335,8 @@ footer {
 }
 
 .left-section .chef-image {
-  width: 630px; /* Gambar akan memenuhi lebar kuadran */
-  height: 630px; /* Gambar akan memenuhi tinggi kuadran */
+  width: 100%; /* Gambar akan memenuhi lebar kuadran */
+  height: 100%; /* Gambar akan memenuhi tinggi kuadran */
   object-fit: cover; /* Memastikan gambar terpotong rapi agar sesuai dengan frame */
   margin: 0; /* Menghapus margin */
   padding: 0; /* Menghapus padding */
@@ -1377,11 +1377,6 @@ footer {
     grid-template-columns: 1fr;
     height: auto;
     min-height: 100vh;
-  }
-
-  .left-section .chef-image {
-    width: 350px; /* Gambar akan memenuhi lebar kuadran */
-    height: 270px;
   }
 
   .left-section {
